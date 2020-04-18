@@ -1,2 +1,2 @@
 # new-me
-Nothing is impossible， for a willing heart.
+It is a readme, nothing special.
