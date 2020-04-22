@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">{{ msg }}
+    <el-table :data="tableData">
+      <el-table-column>
+        
+        <template slot-scope="scope">
+          <span>{{scope.row.test}}</span>
+          <el-tooltip>
+            <template slot="content">{{scope.row.test}}</template>
+            <i class="el-icon-warning" style="color: red;"></i>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+    :page-size="pageSize"
+    layout="prev, pager, next"
+    :total="testData.length"
+    @current-change="pageChangeHandler">
+  </el-pagination>
+  </div>
+  <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->··
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    const test = Vue.component('test', {
+      template: '<div>111</div>',
+      mounted() {
+        console.log(this.$listeners);
+      }
+    })
+    const app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          msg: 'hello vue',
+          pageSize: 10,
+          tableData: null
+        }
+      },
+      computed: {
+        testData() {
+          const arr = []
+          for(let i=0;i<100;i++) {
+            arr.push({
+              test: i
+            })
+          }
+          return arr
+        }
+      },
+      components: {
+        test
+      },
+      created() {
+        this.tableData = this.testData.slice(0,10)
+      },
+      methods: {
+        done() {
+          console.log('i am done');
+        },
+        pageChangeHandler(page) {
+          this.tableData = this.testData.slice((page-1)*this.pageSize,(page)*this.pageSize)
+        }
+      }
+    })
+  </script>
+</body>
+</html>
