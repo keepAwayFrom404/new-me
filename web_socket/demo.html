@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <title>Demo</title>
+</head>
+<body>
+  <div id="app">
+    <el-input v-model="msg"></el-input>
+    <el-button class="el-row" type="primary" @click="sendMessage">send!</el-button>
+  </div>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    const ws = new WebSocket('ws://localhost:8080')
+    ws.onopen = function(e) {
+      console.log('======client connection to server!======')
+    }
+    ws.onmessage = function(e) {
+        console.log(e.data);
+    }
+    const app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          msg: ''
+        }
+      },
+      methods: {
+        sendMessage() {
+          ws.send(this.msg)
+        }
+      },
+    })
+  </script>
+</body>
+</html>

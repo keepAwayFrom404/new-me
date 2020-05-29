@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <title>Chat_Room</title>
+  <style>
+    #app {
+      margin: 20px 100px;
+    }
+    .el-input {
+      width: 400px;
+    }
+    .primary {
+      color: #409eff;
+    }
+    .success {
+      color: #67c23a;
+    }
+    .warning {
+      color: #e6a23c;
+    }
+    .danger {
+      color: #f56c6c;
+    }
+    .info {
+      color: #909399;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <ul>
+      <li v-for="(msg, index) in msgList" :class="msg.type === 'notification'?'warning':msg.type === 'nick_update'?'primary':'success'" :key="index">{{msg.nickname}}: {{msg.message}}</li>
+    </ul>
+    <el-form label-width="60px" label-position="left">
+      <el-form-item label="消息：">
+        <el-input v-model="msg" placeholder="请输入消息内容"></el-input>
+        <el-button type="success" @click="sendMessage" :disabled="!msg">send!</el-button>
+      </el-form-item>
+      <el-form-item label="用户名: ">
+        <el-input v-model="nickname" placeholder="请输入用户名"></el-input>
+        <el-button @click="changeName" type="primary" :disabled="!nickname">change</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    
+    const app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          msg: '',
+          nickname: '',
+          ws: null,
+          msgList: []
+        }
+      },
+      mounted () {
+        const ws = new WebSocket('ws://localhost:8181')
+        const that = this
+        this.ws = ws
+        ws.onopen = function(e) {
+          console.log('======client connection to server!======')
+        }
+        ws.onmessage = function(e) {
+          const data = JSON.parse(e.data)
+          that.nickname = data.nickname
+          that.msgList.push({
+            type: data.type,
+            nickname: data.nickname,
+            message: data.message
+          })
+        }
+        ws.onclose = function(e) {
+          that.msgList.push({
+            type: 'close',
+            message: 'connection closed',
+            nickname: ''
+          })
+        };
+      },
+      methods: {
+        sendMessage() {
+          if(this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(this.msg)
+          }
+          this.msg = ''
+        },
+        changeName() {
+          if(this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(`/nick ${this.nickname}`)
+          }
+        },
+      },
+      beforeDestory() {
+        this.ws.close(1005, 'beybey')
+      }
+    })
+  </script>
+</body>
+</html>

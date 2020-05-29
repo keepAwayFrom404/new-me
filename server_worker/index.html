@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<script>
+  window.addEventListener("load", function() {
+    console.log("Will the service worker register?");
+    navigator.serviceWorker.register('/sw_3.js')
+    .then(function(reg){
+        console.log("Yes, it did.");
+    }).catch(function(err) {
+        console.log("No it didn't. This happened: ", err)
+    }); 
+});
+</script>
+</body>
+</html>

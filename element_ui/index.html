@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+  <div id="app">
+    <el-table
+    ref="a"
+    :data="tableData"
+    @filter-change="filterCountValueChange"
+    style="width: 100%">
+    <el-table-column
+      prop="date"
+      label="日期"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="name"
+      label="姓名"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="count"
+      :filters="filterCount"
+      :filter-method="filterCountHandler"
+      
+      label="数量"
+      width="180">
+    </el-table-column>
+    <el-table-column
+      prop="place"
+      :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
+      :filter-method="filterTag"
+      :filtered-value="filterPalceValue"
+      label="地址">
+    </el-table-column>
+  </el-table>
+  <el-pagination
+    :page-size="pageSize"
+    layout="sizes, prev, pager, next"
+    :total="testData.length"
+    @current-change="pageChangeHandler"
+    @size-change="sizeChangeHandler">
+  </el-pagination>
+  </div>
+</body>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    const place = ['家','公司']
+    new Vue({
+      el: '#app',
+      data: function() {
+        return { 
+          testData: [],
+          tableData:  [],
+          pageSize: 10,
+          filterCount: [],
+          filterCountValue: [],
+          filterPalceValue: [],
+          filterTableData: [],
+         }
+      },
+      mounted () {
+        for (let i = 0; i < 100; i++) {
+          const obj = {}
+          obj.count = (Math.random()*100).toFixed()
+          obj.place = place[Math.random().toFixed()]
+          this.testData.push(obj)
+        }
+        this.filterTableData = this.testData.slice()
+        const tempMap = new Set()
+
+        this.testData.map(item => {
+          tempMap.add(item.count)
+        })
+        
+        this.filterCount = Array.from(tempMap).sort((a,b) => a-b).map(item => ({
+          text: item,
+          value: item
+        }))
+        this.tableData = this.filterTableData.slice(0,this.pageSize)
+      },
+      methods: {
+        pageChangeHandler(page) {
+          this.tableData = this.filterTableData.slice((page-1)*this.pageSize,(page)*this.pageSize)
+        },
+        sizeChangeHandler(val) {
+          this.pageSize = val
+          this.tableData = this.filterTableData.slice(0,this.pageSize)
+        },
+        filterCountValueChange(val) {
+          this.$nextTick(() => {
+            this.tableData = this.filterTableData.filter(item => {
+              return this.$refs.a.store.states.columns[2].filteredValue.includes(item.count)
+            })
+          })
+          console.log(this.tableData);
+        },
+        filterCountHandler(value, row, column) {
+          // let columns = this.$refs.a.columns
+          // filteredValue = columns[2].filteredValue
+          // console.log(filteredValue,111);
+          // this.filterTableData = this.testData.filter(item => {
+          //   return filteredValue.includes(String(item.count))
+          // })
+          // console.log(this.filterTableData);
+          // // this.tableData = this.filterTableData.slice(0,this.pageSize)
+          // const property = column['property'];
+          // return row[property] === value;
+          // const property = column['property'];
+          // return row[property] === value;
+        },
+        filterTag(value, row) {
+        //   let columns = this.$refs.a.columns
+        //   filteredValue = columns[3].filteredValue
+        //   console.log(filteredValue);
+        // return row.tag === value;
+      },
+      },
+    })
+  </script>
+</html>
