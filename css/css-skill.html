@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* border triangle*/
+    .container {
+      width: 0;
+      border: 40px solid transparent;
+      border-top: 100px solid red;
+      border-left: 0;
+    }
+    /*custom border dashed*/
+    .container {
+      width: 200px;
+      height: 100px;
+      border: 1px dashed transparent;background: linear-gradient(white,white) padding-box, repeating-linear-gradient(-45deg,#ccc 0, #ccc .25em,white 0,white .75em);;
+    }
+    /*文本省略必须块级元素 multiline overflow ellipsis 存在兼容问题 webkit*/
+    .text {
+      display: -webkit-box;
+      word-break: break-all;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+  <div class="container"></div>
+  <div class="text">具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整</div>
+</body>
+</html>
