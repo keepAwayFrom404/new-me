@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
   <title>Document</title>
   <style>
     /* border triangle*/
@@ -27,10 +28,78 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    /* timeline */
+    .timeline-content {
+      display: flex;
+    }
+    .timeline {
+      padding: 10px;
+      position: relative;
+      flex: 1;
+    }
+    .timeline:not(:last-child)::before {
+      position: absolute;
+      left: 34px;
+      top: 24px;
+      content: '';
+      width: calc(100% - 34px);
+      height: 1px;
+      background: #ebebeb;
+    }
+    .state-icon {
+      width: 20px;
+      height: 20px;
+    }
+    .state-1{
+    background: url('https://static.daojia.com/assets/project/tosimple-pic/fen-zu-7-copy-6bei-fen_1589266208621.png') no-repeat;
+    background-size: cover;
+  }
+  .state-2{
+    background: url('https://static.daojia.com/assets/project/tosimple-pic/12_1589266226040.png') no-repeat;
+    background-size: cover;
+  }
+  .state-3{
+    background: url('https://static.daojia.com/assets/project/tosimple-pic/fen-zu-7-copy-3_1589266140087.png') no-repeat;
+    background-size: cover;
+  }
+  .timeline-title {
+    font-size: 12px;
+  }
   </style>
 </head>
 <body>
-  <div class="container"></div>
-  <div class="text">具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整</div>
+  <div id="app">
+    <div class="container"></div>
+    <div class="text">具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整</div>
+    <div class="timeline-content">
+      <div class="timeline" v-for="(item, index) in timeline" :key="index">
+        <div :class="`state-${item.state} state-icon`"></div>
+        <div class="timeline-title">{{item.title}}</div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return { 
+          timeline: [{
+            title: '置灰的节点',
+            state: 1,
+          },{
+            title: '失败啦',
+            state: 2,
+          },{
+            title: '恭喜你，成功了！',
+            state: 3,
+          }]
+         }
+      }
+    })
+  </script>
 </body>
 </html>
