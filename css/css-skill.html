@@ -65,6 +65,35 @@
   .timeline-title {
     font-size: 12px;
   }
+  /* scroll */
+  .scroll-content {
+    height: 80px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    overflow: auto;
+  }
+  .scroll-content::-webkit-scrollbar {
+    width: 8px;
+    background: white;
+  }
+  .scroll-content::-webkit-scrollbar-corner,
+  .scroll-content::-webkit-scrollbar-thumb,
+  .scroll-content::-webkit-scrollbar-track {
+    border-radius: 4px;
+  }
+  .scroll-content::-webkit-scrollbar-corner,
+  .scroll-content::-webkit-scrollbar-track {
+    background-color: rgba(180, 160, 120, 0.1);
+    box-shadow: inset 0 0 1px rgba(180, 160, 120, 0.5);
+  }
+  .scroll-content::-webkit-scrollbar-thumb {
+    background-color: #00adb5;
+  }
+  /* 卡券 */
+  .coupon {
+    width: 300px;
+    height: 100px;
+  }
   </style>
 </head>
 <body>
@@ -77,6 +106,11 @@
         <div class="timeline-title">{{item.title}}</div>
       </div>
     </div>
+    <div class="scroll-content">
+      具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整
+      具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整具体的虚线的颜色和间距都可以通过repeating-linear-gradient生成的条纹背景去调整
+    </div>
+    <div class="coupon"></div>
   </div>
   
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
