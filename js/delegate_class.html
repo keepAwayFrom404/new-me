@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    class Widget {
+      constructor(width, height) {
+        this.width = width || 50
+        this.height = height || 50
+        this.$elem = null
+      }
+      render($where) {
+        if(this.$elem) {
+          this.$elem.css({
+            width: this.width + 'px',
+            height: this.height + 'px',
+          }).appendTo($where)
+        }
+      }
+    }
+    class Button extends Widget {
+      constructor(width, height, label) {
+        super(width, height)
+        this.label = label || 'Default'
+        this.$elem = $("<button>").text(this.label)
+      }
+      render($where) {
+        super.render($where) 
+        this.$elem.click(this.onClick.bind(this))
+      }
+      onClick(evt) {
+        console.log(`button ${this.label} clicked!`);
+      }
+    }
+    $(document).ready(function() {
+      const $body = $(document.body)
+      const bt1 = new Button(125, 30, 'Hello')
+      const bt2 = new Button(150, 40, 'world')
+      bt1.render($body)
+      bt2.render($body)
+    })
+  </script>
+</body>
+</html>
