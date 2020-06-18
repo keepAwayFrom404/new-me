@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <input id="login_username" />
+    <input id="login_password" />
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    const LoginController = {
+      errors: [],
+      getUser: function() {
+        return document.getElementById('login_username').value
+      },
+      getPassword: function() {
+        return document.getElementById('login_password').value
+      },
+      validateEntry: function(user, pwd) {
+        user = user || this.getUser()
+        pwd = pwd || this.getPassword()
+
+        if(!(user && pwd)) {
+          return this.failure('Please enter a useename & password!')
+        } else if(pwd.length < 5) {
+          return this.failure('Password must be 5+ characters!')
+        }
+        return true
+      },
+      showDialog: function(title, msg) {
+        // 给用户显示标题和消息
+      },
+      failure: function(err) {
+        this.showDialog('Error'+err)
+      }
+    }
+
+    const AuthController = Object.create(LoginController)
+    AuthController.errors = []
+    AuthController.checkAuth = function() {
+      const user = this.login.getUser()
+      const pwd = this.login.getPassword()
+      if(this.login.validateEntry(user, pwd)) {
+        this.server('/check-auth', {
+          user,
+          pwd
+        }).then(this.accepted.bind(this))
+        .fail(this.rejected.bind(this))
+      }
+    }
+    AuthController.server = function(url, data) {
+      return $.ajax({
+        url,
+        data,
+      })
+    }
+
+    AuthController.accepted = function() {
+      this.showDialog('Success', 'Authenticated!')
+    }
+    AuthController.rejected = function(err) {
+      this.showDialog('Auth Failed: ', + err)
+    }
+    AuthController.checkAuth()
+    const controller1 = Object.create(AuthController)
+    const controller2 = Object.create(AuthController)
+  </script>
+</body>
+</html>
