@@ -20,3 +20,11 @@ const arr: (string[]|number[]) = ['111','123']
 const h1 = document.createElement('h1')
 h1.innerHTML = 'hello TS'
 document.body.appendChild(h1)
+
+const key1: unique symbol = Symbol()
+let key2: symbol = Symbol('lee')
+const obj = {
+  [key1]: 'value1',
+  [key2]: 'value2',
+}
+console.log(obj[key1]);
