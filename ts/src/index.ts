@@ -34,18 +34,25 @@
 // }
 // const d =  Index.c
 
-enum Status {
-  Success = 200,
-  NotFound = 404,
-  Error = 500
-}
+// enum Status {
+//   Success = 200,
+//   NotFound = 404,
+//   Error = 500
+// }
 
-enum E {
-  A,
-  B,
-}
-const getIndex = (enumObj: {A: number}): number => {
-  return enumObj.A
-}
+// enum E {
+//   A,
+//   B,
+// }
+// const getIndex = (enumObj: {A: number}): number => {
+//   return enumObj.A
+// }
 
-console.log(getIndex(E));
+
+const getLength = (target: number | string): number => {
+  if((target as string).length) {
+    return (target as string).length
+  } else {
+    return target.toString().length
+  }
+}
