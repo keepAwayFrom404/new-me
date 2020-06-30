@@ -70,37 +70,88 @@
 /**
  * 接口
  */
-interface Name {
-  firstName: string,
-  lastName: string,
-}
-const getFullName = ({firstName, lastName}: Name) => {
-  console.log(`${firstName} ${lastName}`);
-  return `${firstName} ${lastName}`
-}
+// interface Name {
+//   firstName: string,
+//   lastName: string,
+// }
+// const getFullName = ({firstName, lastName}: Name) => {
+//   console.log(`${firstName} ${lastName}`);
+//   return `${firstName} ${lastName}`
+// }
 
-interface Vegetables {
-  color?: string,
-  type: string,
-  [prop: string]: any
+// interface Vegetables {
+//   color?: string,
+//   type: string,
+//   [prop: string]: any
+// }
+// const getVegetables = ({ color, type }: Vegetables) => {
+//   console.log(`A ${color ? color + " " : ""}${type}`);
+//   return `A ${color ? color + " " : ""}${type}`;
+// };
+
+// getVegetables({type: 'tomoto', size: 'big'})
+
+// interface Role {
+//   readonly 0: string,
+//   readonly 1: string
+// }
+
+// const role: Role = {
+//   0: 'super_admin',
+//   1: 'admin'
+// }
+
+// type AddFunction = (num1: number, num2: number) => number;
+
+// const add: AddFunction = (a, b) => a + b
+
+/**
+ * 接口高级用法
+ */
+
+interface RoleDic {
+  readonly [id: number]: string
 }
-const getVegetables = ({ color, type }: Vegetables) => {
-  console.log(`A ${color ? color + " " : ""}${type}`);
-  return `A ${color ? color + " " : ""}${type}`;
-};
-
-getVegetables({type: 'tomoto', size: 'big'})
-
-interface Role {
-  readonly 0: string,
-  readonly 1: string
-}
-
-const role: Role = {
+const role1: RoleDic = {
   0: 'super_admin',
   1: 'admin'
 }
 
-type AddFunction = (num1: number, num2: number) => number;
+const role2: RoleDic = ['super_admin', 'admin']
 
-const add: AddFunction = (a, b) => a + b
+interface Vegetables {
+  color: string
+}
+
+interface Food {
+  type: string
+}
+
+interface Tomato extends Food, Vegetables {
+  radius: number
+}
+
+const tomato: Tomato = {
+  type: 'vegetable',
+  color: 'red',
+  radius: 1.2
+}
+
+interface Counter {
+  (): void;
+  count: number;
+}
+
+const getCount = (): Counter => {
+  const c = () => {
+    c.count ++
+  }
+  c.count = 0
+  return c
+}
+
+const counter: Counter = getCount()
+counter()
+console.log(counter.count);
+counter()
+console.log(counter.count);
