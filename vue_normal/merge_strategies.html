@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->··
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    const app = new Vue({
+      el: '#app',
+      created() {
+        window.addEventListener('visibilitychange', this.handleVisiblityChange)
+        this.$on('hook:beforeDestroy', () => {
+          window.removeEventListener('visibilitychange', this.handleVisiblityChange)
+        })
+      },
+      methods: {
+        handleVisiblityChange() {
+          if(document.visibilityState === 'hidden') {
+            console.log('page hidden');
+          }
+          if(document.visibilityState === 'visible') {
+            console.log('page visible');
+          }
+        }
+      },
+    })
+    console.log(Vue.config.optionMergeStrategies);
+  </script>
+</body>
+</html>
