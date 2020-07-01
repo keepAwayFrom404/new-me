@@ -160,17 +160,54 @@
  * 函数
  */
 
-const add = (x1: number, x2: number = 2, x3?: number): number => x1 + x2 + (x3 as number)
-const handleData = (x1: number, ...x2: number[]) => {
-  return x2.reduce((pre, cur) => pre + cur, x1)
-}
-console.log(handleData(1, 2, 3,3));
+// const add = (x1: number, x2: number = 2, x3?: number): number => x1 + x2 + (x3 as number)
+// const handleData = (x1: number, ...x2: number[]) => {
+//   return x2.reduce((pre, cur) => pre + cur, x1)
+// }
+// console.log(handleData(1, 2, 3,3));
 
-function reWrite(x: string): string[]
-function reWrite(x: number): string
-function reWrite(x: any): any {
-  if(typeof x === 'string') return x.split('')
-  else return x.toString().split('').join('_')
+// function reWrite(x: string): string[]
+// function reWrite(x: number): string
+// function reWrite(x: any): any {
+//   if(typeof x === 'string') return x.split('')
+//   else return x.toString().split('').join('_')
+// }
+
+// console.log(reWrite(123));
+
+/**
+ * 范型
+ */
+interface ValueWithLength {
+  length: number
+}
+const getLength = <T extends ValueWithLength>(param: T): number => {
+  return param.length
 }
 
-console.log(reWrite(123));
+getLength({length: 2})
+const getArray = <T, U>(value: T, value2: U, num: number = 5): [T, U][] => {
+  return new Array(num).fill([value, value2])
+}
+
+getArray(2, 3).forEach(item => {
+  console.log(item);
+})
+
+interface GetArray<T> {
+  (arg: T, times: number): T[];
+  tag: T
+}
+
+const getArr: GetArray<number> = <T>(arg: T, times: number): T[] => {
+  return new Array(times).fill(arg)
+}
+getArr.tag = 123
+
+getArr(123, 23)
+
+const getProp = <T, K extends keyof T>(object: T, propName: K) => {
+  return object[propName]
+}
+const obj = {a: 'lee', b: 'jiahua'}
+getProp(obj, "a")
