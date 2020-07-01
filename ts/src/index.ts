@@ -109,49 +109,68 @@
  * 接口高级用法
  */
 
-interface RoleDic {
-  readonly [id: number]: string
+// interface RoleDic {
+//   readonly [id: number]: string
+// }
+// const role1: RoleDic = {
+//   0: 'super_admin',
+//   1: 'admin'
+// }
+
+// const role2: RoleDic = ['super_admin', 'admin']
+
+// interface Vegetables {
+//   color: string
+// }
+
+// interface Food {
+//   type: string
+// }
+
+// interface Tomato extends Food, Vegetables {
+//   radius: number
+// }
+
+// const tomato: Tomato = {
+//   type: 'vegetable',
+//   color: 'red',
+//   radius: 1.2
+// }
+
+// interface Counter {
+//   (): void;
+//   count: number;
+// }
+
+// const getCount = (): Counter => {
+//   const c = () => {
+//     c.count ++
+//   }
+//   c.count = 0
+//   return c
+// }
+
+// const counter: Counter = getCount()
+// counter()
+// console.log(counter.count);
+// counter()
+// console.log(counter.count);
+
+/**
+ * 函数
+ */
+
+const add = (x1: number, x2: number = 2, x3?: number): number => x1 + x2 + (x3 as number)
+const handleData = (x1: number, ...x2: number[]) => {
+  return x2.reduce((pre, cur) => pre + cur, x1)
 }
-const role1: RoleDic = {
-  0: 'super_admin',
-  1: 'admin'
+console.log(handleData(1, 2, 3,3));
+
+function reWrite(x: string): string[]
+function reWrite(x: number): string
+function reWrite(x: any): any {
+  if(typeof x === 'string') return x.split('')
+  else return x.toString().split('').join('_')
 }
 
-const role2: RoleDic = ['super_admin', 'admin']
-
-interface Vegetables {
-  color: string
-}
-
-interface Food {
-  type: string
-}
-
-interface Tomato extends Food, Vegetables {
-  radius: number
-}
-
-const tomato: Tomato = {
-  type: 'vegetable',
-  color: 'red',
-  radius: 1.2
-}
-
-interface Counter {
-  (): void;
-  count: number;
-}
-
-const getCount = (): Counter => {
-  const c = () => {
-    c.count ++
-  }
-  c.count = 0
-  return c
-}
-
-const counter: Counter = getCount()
-counter()
-console.log(counter.count);
-counter()
-console.log(counter.count);
+console.log(reWrite(123));
