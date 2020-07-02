@@ -178,36 +178,138 @@
 /**
  * 范型
  */
-interface ValueWithLength {
-  length: number
-}
-const getLength = <T extends ValueWithLength>(param: T): number => {
-  return param.length
+// interface ValueWithLength {
+//   length: number
+// }
+// const getLength = <T extends ValueWithLength>(param: T): number => {
+//   return param.length
+// }
+
+// getLength({length: 2})
+// const getArray = <T, U>(value: T, value2: U, num: number = 5): [T, U][] => {
+//   return new Array(num).fill([value, value2])
+// }
+
+// getArray(2, 3).forEach(item => {
+//   console.log(item);
+// })
+
+// interface GetArray<T> {
+//   (arg: T, times: number): T[];
+//   tag: T
+// }
+
+// const getArr: GetArray<number> = <T>(arg: T, times: number): T[] => {
+//   return new Array(times).fill(arg)
+// }
+// getArr.tag = 123
+
+// getArr(123, 23)
+
+// const getProp = <T, K extends keyof T>(object: T, propName: K) => {
+//   return object[propName]
+// }
+// const obj = {a: 'lee', b: 'jiahua'}
+// getProp(obj, "a")
+
+/**
+ * class
+ */
+//
+
+class Parent {
+  private age: number; // 私有属性
+  protected sex: string; // 受保护属性
+  constructor(age: number, sex: string) {
+    this.age = age
+    this.sex = sex
+  }
+  getAge() {
+    console.log(this.age);
+  }
+  protected getSex() {
+    console.log(this.sex);
+  }
 }
 
-getLength({length: 2})
-const getArray = <T, U>(value: T, value2: U, num: number = 5): [T, U][] => {
-  return new Array(num).fill([value, value2])
+const p = new Parent(18, 'men')
+p.getAge()
+
+class Child extends Parent {
+  constructor(age: number, sex: string) {
+    super(age, sex)
+    // console.log(super.age);
+    console.log(super.getSex());
+  }
 }
 
-getArray(2, 3).forEach(item => {
-  console.log(item);
-})
+const c = new Child(20, 'female')
 
-interface GetArray<T> {
-  (arg: T, times: number): T[];
-  tag: T
+class Info {
+  name: string;
+  age?: number;
+  constructor(name: string, age?: number, sex?: string ) {
+    this.name = name
+    this.age = age
+  }
 }
 
-const getArr: GetArray<number> = <T>(arg: T, times: number): T[] => {
-  return new Array(times).fill(arg)
-}
-getArr.tag = 123
+const info1 = new Info('lee')
+const info2 = new Info('lee', 23)
+const info3 = new Info('lee', 12, 'man')
 
-getArr(123, 23)
-
-const getProp = <T, K extends keyof T>(object: T, propName: K) => {
-  return object[propName]
+class UserInfo {
+  private _fullName!: string;
+  constructor() {}
+  get fullName() {
+    return this._fullName
+  }
+  set fullName(value) {
+    console.log(`setter: ${value}`);
+    this._fullName = value
+  }
 }
-const obj = {a: 'lee', b: 'jiahua'}
-getProp(obj, "a")
+
+const userInfo = new UserInfo()
+userInfo.fullName = 'li jiahua'
+console.log(userInfo.fullName);
+
+abstract class People {
+  abstract _name: string
+  constructor(public name: string) {}
+  abstract printName(): void
+  abstract get insideName(): string
+  abstract set insideName(value: string)
+}
+
+class Pp extends People {
+  _name!: string;
+  insideName!: string;
+  printName() {
+    console.log('aaa');
+  }
+}
+class Man extends People {
+  _name!: string;
+  insideName!: string;
+  constructor(name: string) {
+    super(name)
+    this.name = name
+  }
+  printName() {
+    console.log(this.name);
+  }
+}
+
+const m = new Man('lison')
+m.printName()
+// const p = new People()
+
+const create = <T>(c: {new (): T}): T => {
+  return new c()
+}
+class Info2 {
+  name!: string
+}
+
+create(Info2).name
