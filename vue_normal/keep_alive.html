@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <p>
+      <router-link to="/a">Go to A</router-link>
+      <router-link to="/b">Go to B</router-link>
+    </p>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+    
+  </div>
+  <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    const temA = Vue.component('tem-a', {
+      template: '<div id="temA">template-A</div>',
+      mounted() {
+        setTimeout(() => {
+          document.getElementById('temA').style.color = 'red'
+        }, 1000);
+      },
+      activated() {
+        console.log('A activated');
+      },
+      deactivated() {
+        console.log('A deactivated');
+      }
+    })
+    const temB = Vue.component('tem-b', {
+      template: '<div>template-B</div>',
+      activated() {
+        console.log('B activated');
+      },
+      deactivated() {
+        console.log('B deactivated');
+      }
+    })
+    const routes = [{
+      path: '/a',
+      component: temA
+    },{
+      path: '/b',
+      component: temB
+    }]
+    const router = new VueRouter({
+      routes
+    })
+    const app = new Vue({
+      el: '#app',
+      router
+    })
+  </script>
+</body>
+</html>
