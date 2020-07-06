@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #file-preview {
+        width: 200px;
+        height: 200px;
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="file-preview"></div>
+    <div id="file-info"></div>
+    <input type="file" id="file-test" />
+
+    <script>
+      const fileTest = document.getElementById("file-test");
+      const preview = document.getElementById("file-preview");
+      const info = document.getElementById("file-info");
+      fileTest.addEventListener("change", function () {
+        preview.style.backgroundImage = "";
+        if (!fileTest.value) {
+          info.innerHTML = "没有选择文件";
+          return;
+        }
+        const file = fileTest.files[0];
+
+        if (
+          file.type !== "image/jpeg" &&
+          file.type !== "image/png" &&
+          file.type !== "image/gif"
+        ) {
+          alert("不是有效的图片文件!");
+          return;
+        }
+        info.innerHTML =
+          "文件: " +
+          file.name +
+          "<br>" +
+          "大小: " +
+          file.size +
+          "<br>" +
+          "修改: " +
+          file.lastModifiedDate;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const data = e.target.result; // 'data:image/jpeg;base64,/9j/4AAQSk...(base64编码)..
+          console.log(data);
+          preview.style.backgroundImage = "url(" + data + ")";
+        };
+        reader.readAsDataURL(file);
+        console.log(file);
+      });
+    </script>
+  </body>
+</html>
