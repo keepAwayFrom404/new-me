@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <custom-checkbox v-model="lovingVue"></custom-checkbox>
+    <div>{{lovingVue}}</div>
+  </div>
+  <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+  <!-- <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script> -->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"> -->
+  <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+  <script>
+    Vue.component('custom-checkbox', {
+      model: {
+        prop: 'checked',
+        event: 'change',
+      },
+      props: {
+        checked: Boolean
+      },
+      render(h) {
+        return h('div', [
+          h('input', {
+            attrs: {
+              type: 'checkbox',
+              id: 'cbox1',
+              checked: this.checked
+            },
+            on: {
+              change: (e) => {
+                this.$emit('change', e.target.checked)
+              },
+            },
+          }),
+          h('label', {
+            attrs: {
+              for: 'cbox1'
+            }
+          }, 'This is the first checkbox'),
+        ])
+      },
+    })
+    const app = new Vue({
+      data() {
+        return {
+          lovingVue: true
+        }
+      }
+    }).$mount('#app')
+  </script>
+</body>
+</html>
