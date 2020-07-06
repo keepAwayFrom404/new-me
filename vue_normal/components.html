@@ -23,6 +23,9 @@
       props: {
         checked: Boolean
       },
+      mounted () {
+        console.log(this.$root.foo,2222);;
+      },
       render(h) {
         return h('div', [
           h('input', {
@@ -48,9 +51,23 @@
     const app = new Vue({
       data() {
         return {
-          lovingVue: true
+          lovingVue: true,
+          foo: 1
         }
-      }
+      },
+      computed: {
+        bar() {
+          return 2
+        }
+      },
+      methods: {
+        baz() {
+          console.log(3);
+        }
+      },
+      mounted () {
+        console.log(this.$root.baz());
+      },
     }).$mount('#app')
   </script>
 </body>
