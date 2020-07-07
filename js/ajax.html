@@ -16,20 +16,25 @@
       const textarea = document.getElementById('test-response-text')
       textarea.value = `Error code: ${code}`
     }
-    const req = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
-    req.onreadystatechange = function() {
-      if(req.readyState === 4) {
-        if(req.status === 200) {
-          return success(req.responseText)
+    function Ajax(method, url, data) {
+      const req = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP')
+      return new Promise((resolve, reject) => {
+        req.onreadystatechange = function() {
+        if(req.readyState === 4) {
+          if(req.status === 200) {
+            resolve(req.responseText)
+          } else {
+            reject(req.status)
+          }
         } else {
-          return fail(req.status)
+          console.log('requesting...');
         }
-      } else {
-        console.log('requesting...');
       }
+      req.open(method, url)
+      req.send(data)
+      })
     }
-    req.open('GET', 'http://127.0.0.1:3000/categories')
-    req.send()
+    Ajax('GET', 'http://127.0.0.1:3000/categories').then(success).catch(fail)
     console.log('请求已经发送，请等待响应...');
 
   </script>
