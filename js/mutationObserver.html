@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="some-id">
+    1234
+    <button @click="changeAttr">attrChange</button>
+    <button @click="addChild">addChild</button>
+  </div>
+  <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+  <script>
+    const targetNode = document.getElementById('some-id')
+
+const config = {
+  attributes: true,// 观察属性变动
+  childList: true, // 观察目标子节点的变化，是否有添加或者删除
+  subtree: true,// 观察后代节点，默认为 false
+}
+
+const callback = function(mutationList, observer) {
+  for(let mutation of mutationList) {
+    if(mutation.type === 'childList') {
+      console.log('A child node has been added or removed');
+    } else if (mutation.type === 'attributes') {
+      console.log(`The ${mutation.attributeName} attribute was modified`);
+    }
+  }
+}
+
+const observer = new MutationObserver(callback)
+observer.observe(targetNode, config)
+// observer.disconnect()
+    const app = new Vue({
+      methods: {
+        changeAttr() {
+          console.log(targetNode);
+          targetNode.setAttribute('data-a','a value')
+        },
+        addChild() {
+          const p = document.createElement('p')
+          p.innerHTML = 'i am p child'
+          p.setAttribute('id', 'p-test')
+          targetNode.appendChild(p)
+        },
+      },
+    }).$mount('#some-id')
+    
+  </script>
+</body>
+</html>
