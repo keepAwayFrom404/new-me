@@ -172,7 +172,7 @@ const e = require("express")
 // })
 
 /**
- * Promise 手动实现
+ * Promise 手动实现: https://juejin.im/post/5b2f02cd5188252b937548ab
  */
 class CustomPromise {
   constructor(executor) {
