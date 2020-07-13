@@ -5,6 +5,8 @@
 //   })
 // }
 
+const e = require("express")
+
 // function add(input) {
 //   return new Promise(function(resolve, reject) {
 //     console.log(`calculating ${input} + ${input} ...`);
@@ -144,27 +146,163 @@
 //   console.log(v);
 // })
 
-function delay(time) {
-  return new Promise(res => setTimeout(res, time))
+// function delay(time) {
+//   return new Promise(res => setTimeout(res, time))
+// }
+
+// delay(100).then(function STEP2() {
+//   console.log('Step 2 (after 100ms)');
+//   return delay(200)
+// }).then(function STEP3() {
+//   console.log('Step 3(after another 200ms)');
+// }).then(function STEP4() {
+//   console.log('step 4 (next job)');
+//   return delay(50)
+// }).then(function STEP5() {
+//   console.log('step 5 (after anther 50ms)');
+// })
+
+// const rejectPr = new Promise((resolve, reject) => {
+//   resolve(Promise.reject('Opps'))
+// })
+// rejectPr.then(function fulfilled() {
+//   // 永远不会到达这里
+// }, function reject(err) {
+//   console.log(err);
+// })
+
+/**
+ * Promise 手动实现
+ */
+class CustomPromise {
+  constructor(executor) {
+    this.state = 'pending'
+    this.value = undefined
+    this.reason = undefined
+    this.onResolvedCallbacks = []
+    this.onRejectedCallbacks = []
+    let resolve = (value) => {
+      if(this.state === 'pending') {
+        this.state = 'fulfilled'
+        this.value = value
+        this.onResolvedCallbacks.forEach(fn => fn())
+      }
+    }
+    let reject = (reason) => {
+      if(this.state === 'pending') {
+        this.state = 'rejected'
+        this.reason = reason
+        this.onRejectedCallbacks.forEach(fn => fn())
+      }
+    }
+    try {
+      executor(resolve, reject)
+    } catch (error) {
+      reject(error)
+    }
+  }
+  then(onFulfilled, onRejected) {
+    // onFulfilled如果不是函数，就忽略onFulfilled，直接返回value
+    onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value;
+    // onRejected如果不是函数，就忽略onRejected，直接扔出错误
+    onRejected = typeof onRejected === 'function' ? onRejected : err => { throw err };
+    let promise2 = new Promise((resolve, reject) => {
+      switch (this.state) {
+        case 'fulfilled':
+          setTimeout(() => {
+            try {
+              let x = onFulfilled(this.value)
+              // resolvePromise函数，处理自己return的promise和默认的promise2的关系
+              resolvePromise(promise2, x, resolve, reject);
+            } catch (error) {
+              reject(error)
+            }
+          }, 0);
+          break;
+        case 'rejected':
+          setTimeout(() => {
+            try {
+              let xy = onRejected(this.reason)
+              resolvePromise(promise2, xy, resolve, reject);
+            } catch (error) {
+              reject(error)
+            }
+          }, 0);
+          break;
+        case 'pending':
+          this.onResolvedCallbacks.push(()=>{
+            setTimeout(() => {
+              try {
+                let x = onFulfilled(this.value);
+                resolvePromise(promise2, x, resolve, reject);
+              } catch (error) {
+                reject(error)
+              }
+            }, 0);
+          })
+          this.onRejectedCallbacks.push(()=>{
+            setTimeout(() => {
+              try {
+                let x = onRejected(this.reason);
+                resolvePromise(promise2, x, resolve, reject);
+              } catch (error) {
+                reject(error)
+              }
+            }, 0);
+          })
+          break;
+      }
+    })
+    return promise2
+  }
 }
 
-delay(100).then(function STEP2() {
-  console.log('Step 2 (after 100ms)');
-  return delay(200)
-}).then(function STEP3() {
-  console.log('Step 3(after another 200ms)');
-}).then(function STEP4() {
-  console.log('step 4 (next job)');
-  return delay(50)
-}).then(function STEP5() {
-  console.log('step 5 (after anther 50ms)');
-})
+function resolvePromise(promise2, x, resolve, reject) {
+  if(promise2 === x) {
+    return reject(new Error('循环引用错误'))
+  }
+  // 防止多次调用
+  let called
+  // x不是null且x是对象或者函数
+  if(x !== null && (typeof x === 'object' || typeof x === 'function')) {
+    try {
+      let then = x.then
+      // 如果then是函数，就默认是promise了
+      if(typeof then === 'function') {
+        // 就让then执行 第一个参数是this   后面是成功的回调 和 失败的回调
+        then.call(x, y => {
+          if(called) return
+          called = true
+          // resolve的结果依旧是promise 那就继续解析
+          resolvePromise(promise2, y, resolve, reject)
+        }, err => {
+          if(called) return
+          called = true
+          reject(err)
+        })
+      } else {
+        resolve(x)
+      }
+    } catch (error) {
+      if(called) return
+      called = true
+      reject(error)
+    }
+  } else {
+    resolve(x)
+  }
+}
 
-const rejectPr = new Promise((resolve, reject) => {
-  resolve(Promise.reject('Opps'))
+const cp = new CustomPromise((res, rej) => {
+  setTimeout(() => {
+    res(1342222)
+  }, 1000);
 })
-rejectPr.then(function fulfilled() {
-  // 永远不会到达这里
-}, function reject(err) {
-  console.log(err);
+cp.then((res) => {
+  console.log(res);
+  return 123
+}, (rej) => {
+  console.log(rej, 1111);
+}).then(re => {
+  console.log(re);
 })
