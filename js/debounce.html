@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <br>
+  未防抖：<input type="text" id="undebounce"><br>
+  防抖：<input type="text" id="debounce"><br>
+  节流：<input type="text" id="throttle">
+  <script>
+    function debounce(fn, delay) {
+      let timer
+      return function() {
+        const args = arguments
+        if(timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(() => fn.apply(this, args), delay);
+      }
+    }
+    function throttle(fn, delay) {
+      let last, deferTimer
+      return function() {
+        const _args = arguments
+        let now = +new Date()
+        if(last && now < last + delay) {
+          clearTimeout(deferTimer)
+          deferTimer = setTimeout(() => {
+            last = now
+            fn.apply(this, _args)
+          }, delay);
+        } else {
+          last = now
+          fn.apply(this, _args)
+        }
+      }
+    }
+    function msg(content) {
+      console.log('msg done: '+content);
+    }
+    const debounceFun = debounce(msg, 500)
+    const throttleFun = throttle(msg, 1000)
+    const inputUndebounce = document.getElementById('undebounce')
+    const inputDebounce = document.getElementById('debounce')
+    const inputThrottle = document.getElementById('throttle')
+    inputUndebounce.addEventListener('keyup', (e) => msg(e.target.value))
+    inputDebounce.addEventListener('keyup', (e) => debounceFun(e.target.value))
+    inputThrottle.addEventListener('keyup', (e) => throttleFun(e.target.value))
+  </script>
+</body>
+</html>
