@@ -352,25 +352,41 @@ const e = require("express")
 /**
  * Promise 异步map
  */
-if(!Promise.map) {
-  Promise.map = function(prs, cb) {
-    return Promise.all(prs.map(pr => {
-      return new Promise(resolve => {
-        cb(pr, resolve)
-      })
-    }))
+// if(!Promise.map) {
+//   Promise.map = function(prs, cb) {
+//     return Promise.all(prs.map(pr => {
+//       return new Promise(resolve => {
+//         cb(pr, resolve)
+//       })
+//     }))
+//   }
+// }
+
+// const prm4 = Promise.resolve(21)
+// const prm5 = Promise.resolve(42)
+// const prm6 = Promise.reject('opps!')
+
+// Promise.map([prm4, prm5, prm6], function(pr, done) {
+//   Promise.resolve(pr)
+//   .then(function(v) {
+//     done(v * 2)
+//   }, done)
+// }).then(function(valus)  {
+//   console.log(valus);
+// })
+
+const fulliledTh = {
+  then: function(cb) {
+    cb(42)
   }
 }
 
-const prm4 = Promise.resolve(21)
-const prm5 = Promise.resolve(42)
-const prm6 = Promise.reject('opps!')
+const rejectTh = {
+  then: function(cb, errorCb) {
+    errorCb('Opps')
+  }
+}
 
-Promise.map([prm4, prm5, prm6], function(pr, done) {
-  Promise.resolve(pr)
-  .then(function(v) {
-    done(v * 2)
-  }, done)
-}).then(function(valus)  {
-  console.log(valus);
-})
+const prm7 = Promise.resolve(fulliledTh) 
+const prm8 = Promise.resolve(rejectTh)
+console.log(prm8);
