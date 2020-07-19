@@ -311,40 +311,66 @@ const e = require("express")
  * Promise first 
  */
 
- if(!Promise.first) {
-   Promise.first = function(prs) {
-     return new Promise((resolve, reject) => {
-       const rejArr =[]
-       prs.forEach(element => {
-         Promise.resolve(element)
-         .then(resolve)
-         .catch(err => {
-           rejArr.push(err)
-           if(prs.length === rejArr.length) reject(rejArr[0])
-         })
-       });
-     })
-   }
- }
+//  if(!Promise.first) {
+//    Promise.first = function(prs) {
+//      return new Promise((resolve, reject) => {
+//        const rejArr =[]
+//        prs.forEach(element => {
+//          Promise.resolve(element)
+//          .then(resolve)
+//          .catch(err => {
+//            rejArr.push(err)
+//            if(prs.length === rejArr.length) reject(rejArr[0])
+//          })
+//        });
+//      })
+//    }
+//  }
 
- const Pms1 = new Promise((res, rej) => {
-   setTimeout(() => {
-     rej(1000)
-   }, 1000);
- })
- const Pms2 = new Promise((res, rej) => {
-   setTimeout(() => {
-    rej(2000)
-   }, 2000);
- })
- const Pms3 = new Promise((res, rej) => {
-   setTimeout(() => {
-     rej(1500)
-   }, 1500);
- })
+//  const Pms1 = new Promise((res, rej) => {
+//    setTimeout(() => {
+//      rej(1000)
+//    }, 1000);
+//  })
+//  const Pms2 = new Promise((res, rej) => {
+//    setTimeout(() => {
+//     rej(2000)
+//    }, 2000);
+//  })
+//  const Pms3 = new Promise((res, rej) => {
+//    setTimeout(() => {
+//      rej(1500)
+//    }, 1500);
+//  })
 
- Promise.first([Pms1, Pms2, Pms3]).then(res => {
-   console.log(res);
- }).catch(err => {
-   console.log(err);
- })
+//  Promise.first([Pms1, Pms2, Pms3]).then(res => {
+//    console.log(res);
+//  }).catch(err => {
+//    console.log(err);
+//  })
+
+/**
+ * Promise 异步map
+ */
+if(!Promise.map) {
+  Promise.map = function(prs, cb) {
+    return Promise.all(prs.map(pr => {
+      return new Promise(resolve => {
+        cb(pr, resolve)
+      })
+    }))
+  }
+}
+
+const prm4 = Promise.resolve(21)
+const prm5 = Promise.resolve(42)
+const prm6 = Promise.reject('opps!')
+
+Promise.map([prm4, prm5, prm6], function(pr, done) {
+  Promise.resolve(pr)
+  .then(function(v) {
+    done(v * 2)
+  }, done)
+}).then(function(valus)  {
+  console.log(valus);
+})
