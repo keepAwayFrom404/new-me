@@ -12,7 +12,5 @@
   "dependencies": {
     "uniq": "^1.0.1"
   },
-  "devDependencies": {
-    "browserify": "^16.5.1"
-  }
+  "devDependencies": {}
 }
