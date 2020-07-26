@@ -5,9 +5,16 @@
 </template>
 
 <script>
-
+import * as test from './a'
 export default {
   name: 'App',
+  mounted () {
+    console.log(test.interval);
+    setTimeout(() => {
+      clearInterval(test.interval)
+    }, 2000);
+    
+  },
 }
 </script>
 
