@@ -8,8 +8,9 @@
         margin: 0px;
         overflow: hidden;
         position: relative;
+        background: rgba(15, 50, 77, 1);
       }
-      .box {
+      .bg-wrap-box {
         position: absolute;
         left: 0;
         top: 0;
@@ -18,18 +19,21 @@
         z-index: -1;
         overflow: hidden;
       }
-      .box img {
+      .bg-wrap-box img {
         width: 100%;
         height: 100%;
         opacity: 0;
         transform: scale(1);
         transition: all 10s linear;
       }
-      .box.active img {
+      .bg-wrap-box.active img {
         opacity: 1;
         transform: scale(1.2);
       }
-      .box .bg-point {
+      .bg-wrap-box.init img {
+        opacity: 1;
+      }
+      .bg-wrap-box .bg-wrap-box-point {
         position: absolute;
         opacity: 0.3;
         left: 0;
@@ -39,48 +43,23 @@
         background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKAQMAAAC3/F3+AAAABGdBTUEAALGPC/xhBQAAAAZQTFRF////AAAAVcLTfgAAAAJ0Uk5TMwCC+KgIAAAAE0lEQVQI12P4f4ABiO6BSTiCcQEDUxE1IU/vDQAAAABJRU5ErkJggg==)
           repeat;
       }
-      /* .box-bg1 img {
-        opacity: 1;
-        transform: scale(1.2);
-        animation: bg-transfer 10s linear infinite;
-      } */
-      .box-bg2 img {
-        /* animation: bg-transfer 10s linear 5s infinite ; */
-      }
-      .box-bg3 img {
-        /* animation: bg-transfer 10s linear 10s infinite; */
-      }
-      @keyframes bg-transfer {
-        0% {
-          opacity: 0;
-          transform: scale(1);
-        }
-        50% {
-          opacity: 1;
-          transform: scale(1.2);
-        }
-        100% {
-          opacity: 0;
-          transform: scale(1);
-        }
-      }
     </style>
-    
   </head>
   <body onload="init()">
-    <div class="box box-bg1 active">
+    <div class="bg-wrap-box init">
       <img src="./2.png" alt="" />
-      <div class="bg-point"></div>
+      <div class="bg-wrap-box-point"></div>
     </div>
-    <div class="box box-bg2" >
+    <div class="bg-wrap-box">
       <img src="./1.png" alt="" />
-      <div class="bg-point"></div>
+      <div class="bg-wrap-box-point"></div>
     </div>
-    <div class="box box-bg3">
+    <div class="bg-wrap-box">
       <img src="./3.png" alt="" />
-      <div class="bg-point"></div>
+      <div class="bg-wrap-box-point"></div>
     </div>
     <script src="https://cdn.bootcdn.net/ajax/libs/three.js/48/Three.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.19/lodash.min.js"></script>
     <script>
       //定义应用所需的组件:相机,场景,渲染器
       var camera, scene, renderer;
@@ -117,64 +96,67 @@
         //调用自定义的生成粒子的方法
         makeParticles();
         //添加鼠标移动监听
-        // document.addEventListener('mousemove',onMouseMove,false);
+        window.addEventListener("resize", _.debounce(onWindowResize, 1000));
         //设置间隔调用update函数,间隔次数为每秒30次
-        setInterval(update, 1000 / 30);
+        // setInterval(update, 1000 / 30);
+        requestAnimationFrame(update);
+        transferActiveInit();
+        transferActive();
+        setInterval(transferActive, 12000);
       }
 
       function update() {
-        //调用移动粒子的函数
+        // 调用移动粒子的函数
         updateParticles();
-        //重新渲染
+        // 重新渲染
         renderer.render(scene, camera);
+        requestAnimationFrame(update);
       }
 
-      //定义粒子生成的方法
+      // 定义粒子生成的方法
       function makeParticles() {
-        var particle, material;
-        //粒子从Z轴产生区间在-1000到1000
-        for (var zpos = -1000; zpos < 1000; zpos += 20) {
-          //we make a particle material and pass through the colour and custom particle render function we defined.
+        let particle, material;
+        // 粒子从Z轴产生区间在-1000到1000（zpos += x 可通过x调整粒子数量）
+        for (let zpos = -1000; zpos < 1000; zpos += 10) {
+          // we make a particle material and pass through the colour and custom particle render function we defined.
           material = new THREE.ParticleCanvasMaterial({
             color: 0xffffff,
             program: particleRender,
           });
-          //生成粒子
+          // 生成粒子
           particle = new THREE.Particle(material);
-          //随即产生x轴,y轴,区间值为-500-500
-          particle.position.x = Math.random() * 1000 - 500; //math . random()返回一个浮点数在0和1之间
-          particle.position.y = Math.random() * 1000 - 500;
-          //设置z轴
+          // 随机产生x轴区间值为-1500到1500,y轴区间值为-1000到1000（设置粒子展开的幅度）
+          particle.position.x = Math.random() * 3000 - 1500; // math . random()返回一个浮点数在0和1之间
+          particle.position.y = Math.random() * 2000 - 1000;
+          // 设置z轴
           particle.position.z = zpos;
-          //scale it up a bit
+          // scale it up a bit
           particle.scale.x = particle.scale.y = 1;
-          //将产生的粒子添加到场景
+          // 将产生的粒子添加到场景
           scene.add(particle);
-          //将粒子位置的值保存到数组
+          // 将粒子位置信息保存到数组
           particles.push(particle);
         }
       }
 
-      //定义粒子渲染器
+      // 定义粒子渲染器
       function particleRender(context) {
-        //获取canvas上下文的引用
+        // 获取canvas上下文的引用
         context.beginPath();
-        // and we just have to draw our shape at 0,0 - in this
-        // case an arc from 0 to 2Pi radians or 360º - a full circle!
         context.arc(0, 0, 1, 0, Math.PI * 2, true);
-        //设置原型填充
+        // 设置原型填充
         context.fill();
       }
 
-      //移动粒子的函数
+      // 移动粒子的函数
       function updateParticles() {
-        //遍历每个粒子
-        for (var i = 0; i < particles.length; i++) {
-          particle = particles[i];
-          //设置粒子向前移动的速度依赖于鼠标在平面Y轴上的距离
-          particle.position.z += 50 * 0.1;
-          //如果粒子Z轴位置到1000,将z轴位置设置到-1000
-          if (particle.position.z > 1000) {
+        // 遍历每个粒子
+        for (let i = 0; i < particles.length; i++) {
+          let particle = particles[i];
+          // 设置粒子向前移动的速度
+          particle.position.z += 25 * 0.1;
+          // 如果粒子Z轴位置到1000,将z轴位置设置到-1000
+          if (particle.position.z >= 1000) {
             particle.position.z -= 2000;
           }
         }
@@ -186,37 +168,38 @@
         mouseY = event.clientY;
       }
 
+      // 窗口变化重新计算渲染器大小
       function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       }
-      
-      let curActive = 1
-      const bgBoxs = document.getElementsByClassName('box')
+      /**
+       * 动态背景切换
+       */
+      let curActive = 1; // 最开始要显示一个，所以从1开始
+      const bgBoxs = document.getElementsByClassName("bg-wrap-box");
+      // 初始化背景图片切换动画
       function transferActiveInit() {
-        bgBoxs[0].classList.remove('active')
+        bgBoxs[0].classList.remove("init");
       }
+      // 定时执行背景切换
       function transferActive() {
-        console.log(curActive, 'curActive ===========>');
-        
-        if(curActive === 0) {
-          bgBoxs[2].classList.remove('active')
-          bgBoxs[0].classList.add('active')
-          curActive ++
-        } else if(curActive === 1) {
-          bgBoxs[0].classList.remove('active')
-          bgBoxs[1].classList.add('active')
-          curActive ++
-        } else if(curActive === 2) {
-          bgBoxs[1].classList.remove('active')
-          bgBoxs[2].classList.add('active')
-          curActive = 0
+        console.log(curActive);
+        if (curActive === 0) {
+          bgBoxs[2].classList.remove("active");
+          bgBoxs[0].classList.add("active");
+          curActive++;
+        } else if (curActive === 1) {
+          bgBoxs[0].classList.remove("active");
+          bgBoxs[1].classList.add("active");
+          curActive++;
+        } else if (curActive === 2) {
+          bgBoxs[1].classList.remove("active");
+          bgBoxs[2].classList.add("active");
+          curActive = 0;
         }
       }
-      transferActiveInit()
-      transferActive()
-      setInterval(transferActive, 10000);
     </script>
   </body>
 </html>
