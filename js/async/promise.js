@@ -93,3 +93,24 @@ Promise.first([p1,p2]).then(res => {
 }).catch(err => {
   console.log(err);
 })
+
+if(!Promise.map) {
+  Promise.map = function(prs, cb) {
+    return Promise.all(prs.map(pr => {
+      return new Promise((resolve) => {
+        cb(pr, resolve)
+      })
+    }))
+  }
+}
+
+const p3 = Promise.resolve(21)
+const p4 = Promise.reject(42)
+
+Promise.map([p3,p4,7], function(pr, resolve) {
+  Promise.resolve(pr).then(fulfilled => {
+    resolve(fulfilled * 2)
+  },resolve)
+}).then(res => {
+  console.log(res);
+})
