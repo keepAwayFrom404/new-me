@@ -39,12 +39,12 @@
 // })
 const p1 = new Promise((resolve, reject) => {
   setTimeout(() => {
-    resolve('p1 done')
+    reject('p1 done')
   }, 1500);
 })
 const p2 = new Promise((resolve, reject) => {
   setTimeout(() => {
-    resolve('p2 done')
+    reject('p2 done')
   }, 1000);
 })
 
@@ -66,7 +66,29 @@ if(!Promise.all1) {
   }
 }
 
-Promise.all1([p1,p2]).then(res => {
+// Promise.all1([p1,p2]).then(res => {
+//   console.log(res);
+// }).catch(err => {
+//   console.log(err);
+// })
+if(!Promise.first) {
+  Promise.first = function(prs) {
+    return new Promise((resolve, reject) => {
+      
+      let result = []
+      function validate() {
+        if(result.filter(item => item).length === prs.length) reject(result)
+      }
+      prs.forEach((pr, i) => {
+        Promise.resolve(pr).then(resolve).catch(err => {
+          result[i] = err
+        }).then(validate)
+      })
+    })
+  }
+}
+
+Promise.first([p1,p2]).then(res => {
   console.log(res);
 }).catch(err => {
   console.log(err);
