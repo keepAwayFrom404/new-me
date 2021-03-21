@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcdn.net/ajax/libs/konva/7.2.5/konva.js"></script>
+  <script src="./konva_it_case.js"></script>
+  <title>Document</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #f0f0f0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    // 第一步：创建舞台
+    const stage = new Konva.Stage({
+      container: 'container',
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+    const x = stage.width() / 2
+    const y = stage.height() / 2
+    const innerRadius = 252 / 2
+    const outerRadius = 220
+
+    const bgLayer = new Konva.Layer()
+    stage.add(bgLayer)
+    const inner = new Konva.Circle({
+      x,
+      y,
+      radius: innerRadius,
+      stroke: '#dad8e0',
+      strokeWidth: 4,
+      dash: [10, 4]
+    })
+    bgLayer.add(inner)
+    const outer = new Konva.Circle({
+      x,
+      y,
+      radius: outerRadius,
+      stroke: '#dad8e0',
+      strokeWidth: 4,
+      dash: [10, 4]
+    })
+    bgLayer.add(outer)
+
+    const p = new MyStar({
+      x,
+      y,
+      r: 132/2,
+      outerR: 180 / 2,
+      innerFill: '#525a82',
+      outerFill: '#e1e1e1',
+      text: 'Web 全栈'
+    })
+    p.addGroupToLayer(bgLayer)
+    bgLayer.draw()
+
+
+    const animateLayer = new Konva.Layer()
+    stage.add(animateLayer)
+    const L2Group = new Konva.Group({
+      x,
+      y,
+    })
+
+    const l2_circle_css3 = new MyStar({
+      x: innerRadius*Math.cos(180*Math.PI/180),
+      y: innerRadius*Math.sin(180*Math.PI/180),
+      r: 30,
+      outerR: 40,
+      outerFill: '#e1e1e1',
+      innerFill: '#faced6',
+      text: 'CSS3'
+    })
+    l2_circle_css3.addGroupToLayer(L2Group)
+
+
+    const l2_circle_html5 = new MyStar({
+      x: innerRadius*Math.cos(80*Math.PI/180),
+      y: innerRadius*Math.sin(80*Math.PI/180),
+      r: 30,
+      outerR: 40,
+      outerFill: '#e1e1e1',
+      innerFill: 'orange',
+      text: 'HTML5'
+    })
+    l2_circle_html5.addGroupToLayer(L2Group)
+    animateLayer.add(L2Group)
+
+    const L3Group = new Konva.Group({
+      x,
+      y,
+    })
+    const l3_circle_js = new MyStar({
+      x: outerRadius*Math.cos(-60*Math.PI/180),
+      y: outerRadius*Math.sin(-60*Math.PI/180),
+      r: 40,
+      outerR: 50,
+      outerFill: '#e1e1e1',
+      innerFill: '#91bff8',
+      text: 'JS'
+    })
+    l3_circle_js.addGroupToLayer(L3Group)
+    animateLayer.add(L3Group)
+    animateLayer.draw()
+
+
+    let rotateAngPerSecond = 60
+    const animate = new Konva.Animation(function(frame) {
+      const roteteAngle = frame.timeDiff/1000 * rotateAngPerSecond
+      L2Group.rotate(roteteAngle)
+      L2Group.getChildren().each((item, idx) => {
+        item.rotate(-roteteAngle)
+      })
+      L3Group.rotate(-roteteAngle)
+      L3Group.getChildren().each((item, idx) => {
+        item.rotate(roteteAngle)
+      })
+    }, animateLayer)
+    animate.start()
+
+    animateLayer.on('mouseover', function() {
+      rotateAngPerSecond = 10
+    })
+    animateLayer.on('mouseout', function() {
+      rotateAngPerSecond = 60
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcdn.net/ajax/libs/konva/7.2.5/konva.js"></script>
+  <script src="./konva.js"></script>
+  <title>Document</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #f0f0f0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    // 第一步：创建舞台
+    const stage = new Konva.Stage({
+      container: 'container',
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+    // 第二步：创建一个层
+    const layer = new Konva.Layer()
+
+    // 第三步：将层添加到舞台上去，后添加的在上面
+    stage.add(layer)
+
+
+    const cenX = stage.width() / 2
+    const cenY = stage.height() / 2
+    const x = 1/8 * stage.width()
+    const y = cenY
+    const height = 1 / 12 * stage.height()
+    const maxWidth = 3/4 *stage.width()
+    
+    const p = new ProgressBar({
+      x,
+      y,
+      w: maxWidth,
+      h: height,
+      fillStyle: 'red',
+      strokeStyle: 'blue'
+    })
+
+    p.addToGroupLayer(layer)
+    
+    layer.draw()
+  </script>
+</body>
+</html>
