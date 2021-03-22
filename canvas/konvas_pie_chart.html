@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.bootcdn.net/ajax/libs/konva/7.2.5/konva.js"></script>
+  <script src="./konvas_pie_chart.js"></script>
+  <title>Document</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background-color: #f0f0f0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    const data = [
+      {
+        name: '前端',
+        value: 0.25,
+        color: '#e0e',
+      },
+      {
+        name: 'PHP',
+        value: 0.2,
+        color: 'orange',
+      },
+      {
+        name: 'UI',
+        value: 0.3,
+        color: 'blue',
+      },
+      {
+        name: 'C++',
+        value: 0.05,
+        color: 'green',
+      },
+      {
+        name: '游戏',
+        value: 0.1,
+        color: 'purple',
+      },
+      {
+        name: 'Java',
+        value: 0.1,
+        color: 'red',
+      },
+    ]
+
+   
+    const stage = new Konva.Stage({
+      container: 'container',
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+    const layer = new Konva.Layer()
+    stage.add(layer)
+
+    const x = stage.width()/2
+    const y = stage.height()/2
+
+    const p = new PieChart({
+      x,
+      y,
+      r: 100,
+      data,
+    })
+    p.addToGroupLayer(layer)
+   
+    layer.draw()
+    
+    p.playAnimate()
+    
+  </script>
+</body>
+</html>
