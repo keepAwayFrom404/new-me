@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+  <script src="./script.js"></script>
+</head>
+<body>
+  <canvas  id="canvas"></canvas>
+  <button class="btn-dir-left">⬅️</button>
+  <button class="btn-dir-right">➡️</button>
+  <button class="btn-dir-up">⬆️</button>
+  <button class="btn-dir-down">⬇️</button>
+  <script>
+    /** @type {HTMLCanvasElement} */
+    const canvas = document.getElementById("canvas")
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = 600
+    canvas.height = 600;
+    
+    // 封装一个对象：
+    const s = new Sprite({
+      x: 200,
+      y: 200,
+      w: 75,
+      h: 112.5,
+      fps: 10,
+      originW: 75,
+      originH: 112.5,
+      imgSrc: './test.png'
+    })
+    s.render(ctx)
+
+    const btnLeft = document.querySelector('.btn-dir-left')
+    btnLeft.onclick = function() {
+      s.changeDir('left')
+    }
+    const btnRight = document.querySelector('.btn-dir-right')
+    btnRight.onclick = function() {
+      s.changeDir('right')
+    }
+    const btnUp = document.querySelector('.btn-dir-up')
+    btnUp.onclick = function() {
+      s.changeDir('up')
+    }
+    const btnDown = document.querySelector('.btn-dir-down')
+    btnDown.onclick = function() {
+      s.changeDir('down')
+    }
+    
+
+
+  </script>
+</body>
+</html>
