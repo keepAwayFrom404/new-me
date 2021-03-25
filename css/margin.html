@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .column-box {
+      /* overflow: hidden; */
+      background-color: olive;
+      /* padding-top: 1px; */
+      /* margin-top: 20px; */
+      height: 140px;
+    }
+    /* .column-left,.column-right {
+      display: inline-block;
+      width: 200px;
+      margin-bottom: -9999px;
+      border-bottom: 9999px solid transparent;
+      word-break: break-all;
+    }
+    .column-left {
+      background: pink;
+    } */
+    .column-left,.column-right {
+      /* display: inline-block; */
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      background: red;
+      /* margin: 50%; */
+      /* background: red; */
+    }
+    .column-left {
+      background: pink;
+    }
+    .fath{
+      width: 300px;
+      height: 150px;
+      background: red;
+      position: relative;
+    }
+    .child {
+      background: pink;
+      /* margin-right: 80px; */
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      width: 200px;
+      height: 100px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="fath">
+    <div class="child"></div>
+  </div>
+</body>
+</html>

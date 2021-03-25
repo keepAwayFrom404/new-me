@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .demo {
+      /* width: 20px;
+      height: 2px;
+      border-top: 6px double red;
+      border-bottom: 2px solid red; */
+      width: 200px;
+      height: 200px;
+      color: #ccc;
+      border: 2px dashed;
+      position: relative;
+    }
+    .demo:before,.demo:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+    }
+    .demo:before {
+      width: 20px;
+      border-top: 4px solid;
+      margin: -2px 0 0 -10px;
+    }
+    .demo:after {
+      height: 20px;
+      border-left: 4px solid;
+      margin: -10px 0 0 -2px;
+    }
+    .demo:hover {
+    color: #34538b;
+}
+    /* .dotted {
+      width: 100%;
+      height: 100%;
+      border: 149px dotted red;
+    } */
+  </style>
+</head>
+<body>
+  <div class="contet">
+    <div class="demo"></div>
+  </div>
+  
+  </div>
+</body>
+</html>
