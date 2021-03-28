@@ -9,6 +9,13 @@ module.exports = {
   module: {
     rules: [
       {
+        exclude: /\.(css|js|html)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[hash:10].[ext]'
+        } 
+      },
+      {
         test: /\.css$/,
         use: [
           'style-loader',
@@ -26,7 +33,8 @@ module.exports = {
       {
         test: /\.jpg|png|jpeg/,
         use: ['url-loader']
-      }
+      },
+      
     ]
   },
   plugins: [
@@ -36,4 +44,10 @@ module.exports = {
   ],
   mode: 'development',
   // mode: 'production',
+  devServer: {
+    contentBase: resolve(__dirname, 'public'),
+    compress: true,
+    port: 3000,
+    open: true
+  }
 }
