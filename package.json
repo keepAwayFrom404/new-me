@@ -17,6 +17,10 @@
     "html-webpack-plugin": "^5.3.1",
     "less": "^4.1.1",
     "less-loader": "^8.0.0",
+    "mini-css-extract-plugin": "^1.4.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "postcss-loader": "^5.2.0",
+    "postcss-preset-env": "^6.7.0",
     "style-loader": "^2.0.0",
     "url-loader": "^4.1.1",
     "webpack-dev-server": "^3.11.2"
@@ -33,5 +37,17 @@
   "bugs": {
     "url": "https://github.com/keepAwayFrom404/new-me/issues"
   },
-  "homepage": "https://github.com/keepAwayFrom404/new-me#readme"
+  "homepage": "https://github.com/keepAwayFrom404/new-me#readme",
+  "browserslist": {
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ]
+  }
 }
