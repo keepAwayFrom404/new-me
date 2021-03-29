@@ -4,15 +4,16 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: resolve(__dirname, 'public'),
-    filename: 'built.js',
+    filename: 'js/built.js',
   },
   module: {
     rules: [
       {
-        exclude: /\.(css|js|html)$/,
+        exclude: /\.(css|js|html|less|jpg|png|jpeg)$/,
         loader: 'file-loader',
         options: {
-          name: '[hash:10].[ext]'
+          name: '[hash:10].[ext]',
+          outputPath: 'iconfont'
         } 
       },
       {
@@ -32,9 +33,18 @@ module.exports = {
       },
       {
         test: /\.jpg|png|jpeg/,
-        use: ['url-loader']
+        loader: 'url-loader',
+        options: {
+          limit: 8 * 1024,
+          name: '[hash:10].[ext]',
+          esModule: false,
+          outputPath: 'assets'
+        }
       },
-      
+      {
+        test: /\.html$/,
+        loader: 'html-loader'
+      }
     ]
   },
   plugins: [

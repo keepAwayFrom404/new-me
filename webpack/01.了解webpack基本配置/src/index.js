@@ -1,3 +1,3 @@
-import './index.css'
-import './index.less'
-import './iconfont.css'
+import './styles/index.css'
+import './styles/index.less'
+import './iconfont/iconfont.css'
