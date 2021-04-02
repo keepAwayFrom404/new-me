@@ -5,6 +5,9 @@ import 'core-js/modules/web.timers.js';
 import './styles/a.css';
 import './styles/b.css';
 
+const a = require('kityminder-core')
+console.log(a);
+
 const add = function add(x, y) {
   return x + y;
 };
