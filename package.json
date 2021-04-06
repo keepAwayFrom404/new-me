@@ -4,6 +4,7 @@
   "description": "It is a readme, nothing special.",
   "main": "1.js",
   "dependencies": {
+    "angular": "^1.8.2",
     "core-js": "^3.10.0",
     "element-theme": "^2.0.1",
     "element-theme-chalk": "^2.13.2",
