@@ -1,3 +1,3 @@
 export default function print() {
-  console.log('hello webpack~');
+  const content = 'hello webpack~';console.log(content)();
 }
