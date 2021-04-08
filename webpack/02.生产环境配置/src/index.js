@@ -5,9 +5,6 @@ import 'core-js/modules/web.timers.js';
 import './styles/a.css';
 import './styles/b.css';
 
-const a = require('kityminder-core')
-console.log(a);
-
 const add = function add(x, y) {
   return x + y;
 };
@@ -19,3 +16,9 @@ const p = new Promise((resolve) => {
   }, 1000);
 });
 p.then((res) => console.log(res));
+
+function sum(...args) {
+  console.log(args.reduce((p, c) => p + c, 0));
+}
+
+sum(1,2,3,4)
