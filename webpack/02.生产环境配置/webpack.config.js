@@ -24,9 +24,21 @@ const commonCssLoader = [
 
 module.exports = {
   entry: './src/index.js',
+  // entry: {
+  //   // 多入口，有一个入口就有一个bundle
+  //   main: './src/index.js',
+  //   test: './src/test.js'
+  // },
   output: {
     path: resolve(__dirname, 'build'),
-    filename: 'js/built[contenthash:10].js',
+    filename: 'js/[name][contenthash:10].js',
+  },
+  // 可以将node_modules里代码单独打包成一个chunk最终输出
+  // 自动分析多入口的chunk中是否有公共的依赖，单独打包成一个chunk
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
   },
   module: {
     rules: [
@@ -149,4 +161,8 @@ module.exports = {
  * 作用：减少打包后的体积
  * 在package.json中配置
  * sideEffects：false 代表所有代码都没有副作用，都能进行tree-shaking（会导致直接引入的css与polyfill代码被去除）
+ */
+
+/**
+ * chunk split：代码分割,拆分成多个资源文件并行加载提高效率
  */
