@@ -4,6 +4,7 @@ import 'core-js/modules/web.timers.js';
 
 import './styles/a.css';
 import './styles/b.css';
+import {mul} from './test'
 
 const add = function add(x, y) {
   return x + y;
@@ -22,3 +23,5 @@ function sum(...args) {
 }
 
 sum(1,2,3,4)
+
+console.log(mul(3,8));

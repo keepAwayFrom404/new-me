@@ -142,3 +142,11 @@ module.exports = {
  *    问题：js和hash值还是一样，因为css是在js中被引入的所以属于一个chunk（根据路口文件生成一个chunk）
  * contenthash：根据文件的内容生成生成hash值，不同文件hash值不同
  */
+
+
+/**
+ * tree-shaking: 去除未引用代码，必须开启es6module，且开启production
+ * 作用：减少打包后的体积
+ * 在package.json中配置
+ * sideEffects：false 代表所有代码都没有副作用，都能进行tree-shaking（会导致直接引入的css与polyfill代码被去除）
+ */
