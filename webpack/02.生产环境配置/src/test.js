@@ -1,3 +1,4 @@
+console.log('test 被加载！');
 function mul(a,b) {
   return a * b
 }

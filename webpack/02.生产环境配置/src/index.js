@@ -1,10 +1,11 @@
+console.log('index 被加载！');
 import 'core-js/modules/es.promise.js';
 import 'core-js/modules/es.object.to-string.js';
 import 'core-js/modules/web.timers.js';
 
 import './styles/a.css';
 import './styles/b.css';
-// import {mul} from './test'
+import {mul} from './test'
 import $ from 'jquery'
 console.log($);
 const add = function add(x, y) {
@@ -16,11 +17,11 @@ const add = function add(x, y) {
  * import动态引入
  * 
  */
-import(/*webpackChunkName: 'test'*/'./test').then(res => {
-  console.log(res.mul(3,4));
-}).catch(err => {
-  console.log(err);
-})
+// import(/*webpackChunkName: 'test'*/'./test').then(res => {
+//   console.log(res.mul(3,4));
+// }).catch(err => {
+//   console.log(err);
+// })
 
 console.log(add(2, 5));
 const p = new Promise((resolve) => {

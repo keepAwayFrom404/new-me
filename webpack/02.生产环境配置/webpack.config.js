@@ -72,7 +72,20 @@ module.exports = {
             exclude: /node_modules/,
             include: /webpack/,
             test: /\.js$/,
-            // js兼容性：babel-loader，进行兼容性处理与语法转换
+            /**
+             * 开启多进程打包
+             * 进程开启是有时间的大概为600ms，进程通信也有开销
+             * 只有工作消耗时间比较长，才使用多进程打包
+             */
+            use: [
+              {
+                loader: 'thread-loader',
+                options: {
+                  workers: 3, // 两个进程
+                }
+              },
+              {
+                // js兼容性：babel-loader，进行兼容性处理与语法转换
             loader: 'babel-loader',
             options: {
               // 预设：指示babel做什么兼容性处理，@babel/preset-env只能转换基本语法
@@ -99,6 +112,9 @@ module.exports = {
               // 开启babel缓存，第二次只会对修改的文件进行babel转译，第二次构建会读取缓存
               cacheDirectory: true
             },
+              }
+            ],
+            
           },
           {
             test: /\.(gif|png|jpg|jepg)/,
@@ -165,4 +181,8 @@ module.exports = {
 
 /**
  * chunk split：代码分割,拆分成多个资源文件并行加载提高效率
+ */
+
+/**
+ * lazy loading: 资源懒加载
  */
