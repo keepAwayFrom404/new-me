@@ -25,7 +25,21 @@ const commonCssLoader = [
     loader: 'postcss-loader',
     options: {
       postcssOptions: {
-        // 帮助postcss找到browerslist配置，通过配置加载指定的css兼容样式
+        /**
+         * 帮助postcss找到browerslist配置，通过配置加载指定的css兼容样式
+         * "browserslist": {
+              "development": [
+                "last 1 chrome version",
+                "last 1 firefox version",
+                "last 1 safari version"
+              ],
+              "production": [
+                ">0.2%",
+                "not dead",
+                "not op_mini all"
+              ]
+            },
+         */
         plugins: ['postcss-preset-env'],
       },
     },
