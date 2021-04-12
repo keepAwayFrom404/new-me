@@ -3,6 +3,7 @@
 （3）webpack5的url-loader与html-loader默认都使用esModule了
 （4）css压缩会warnming
 （5）将css从js抽离出来会导致图片引用路径出错，暂时在MiniCssExtractPlugin.loader加一个publicPath（因为css被打包到了css目录下）
+（6）dll的add-asset-html-webpack-plugin插件需要指定publicPath，不然引用路径会错误自动添加auto
 # webpack 性能优化
 * 开发环境优化
 * 生产环境优化
