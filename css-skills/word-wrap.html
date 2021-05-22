@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* .wrap {
+      display: flex;
+      margin: 50px auto;
+      width: 800px;
+      overflow: hidden;
+      border-radius: 8px;
+      padding: 15px ;
+      box-shadow: 20px 20px 60px #bebebe,
+        -20px -20px 60px #ffffff;
+    }
+    .text {
+      position: relative;
+      text-align: justify;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .text::before {
+      content: '';
+      height: 100%;
+      float: right;
+      margin-bottom: -22px;
+    }
+    .text::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .btn {
+      background-color: #409eff;
+      border-radius: 4px;
+      box-sizing: border-box;
+      padding: 0 8px;
+      color: #fff;
+      cursor: pointer;
+      float: right;
+      clear: both;
+    }
+    .btn::before {
+      content: '展开';
+    }
+
+    #switch {
+      display: none;
+    }
+    #switch:checked + .text {
+      -webkit-line-clamp: 999;
+    }
+    #switch:checked + .text::after {
+      visibility: hidden;
+    }
+    #switch:checked + .text .btn::before {
+      content: '收起';
+    } */
+
+    /* 兼容版本 */
+    .wrap {
+      display: flex;
+      margin: 50px auto;
+      width: 800px;
+      overflow: hidden;
+      border-radius: 8px;
+      padding: 15px ;
+      box-shadow: 20px 20px 60px #bebebe,
+        -20px -20px 60px #ffffff;
+    }
+    .text {
+      position: relative;
+      line-height: 1.5;
+      overflow: hidden;
+      text-align: justify;
+      transition: .3s max-height;
+    }
+    .text::before {
+      content: '';
+      height: 100%;
+      margin-bottom: -24px;
+      float: right;
+    }
+    .text::after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background: #fff;
+    }
+    .btn {
+      position: relative;
+      background-color: #409eff;
+      border-radius: 4px;
+      box-sizing: border-box;
+      padding: 0 8px;
+      color: #fff;
+      cursor: pointer;
+      float: right;
+      clear: both;
+      margin-left: 20px;
+    }
+    .btn::before {
+      content: '...';
+      position: absolute;
+      left: -5px;
+      color: #333;
+      transform: translateX(-100%);
+    }
+    #switch {
+      display: none;
+    }
+    #switch:checked+.text {
+      max-height: none;
+    }
+    #switch:checked + .text .btn::before {
+      visibility: hidden;
+    }
+    #switch:checked + .text::after {
+      visibility: hidden;
+    }
+    .btn::after {
+      content: '展开';
+    }
+    #switch:checked + .text .btn::after {
+      content: '收起';
+    }
+    .text[line-clamp='1'] {
+      max-height: 1.5em;
+    }
+    .text[line-clamp='2'] {
+      max-height: 3em;
+    }
+    .text[line-clamp='3'] {
+      max-height: 4.5em;
+    }
+    .text[line-clamp='4'] {
+      max-height: 6em;
+    }
+    #switch:checked+.text {
+      max-height: 200px;
+    }
+    
+  </style>
+</head>
+<body>
+  <!-- 实现原理：
+  （1）多行文本截断，主要是用line-clamp；
+  （2）右下角的环绕效果，使用浮动布局，配合伪元素，伪元素动态高度需要使用flex布局让它继承父级高度
+  （3）浏览器兼容处理：火狐、safire不兼容-webkit-box，使用定高超出隐藏设置
+  （4）展开收起状态，使用checkbox切换，将btn换成label关联checkbox
+  （5）展开收起文案可以用伪元素content生成，省略号的现实隐藏根据checkbox状态决定
+  （6）加上动画
+  （7）设置css遮挡
+  待学习属性：-webkit-box、-webkit-line-clamp、-webkit-box-orient、clear: both、before元素浮动无高度(高度100%失效) -->
+  <div class="wrap">
+    <input type="checkbox" id="switch">
+    <div class="text" line-clamp="3">
+      <label for="switch" class="btn"></label>
+      <span>浮动元素是如何定位的
+        正如我们前面提到的那样，当一个元素浮动之后，它会被移出正常的文档流，然后向左或者向右平移，一直平移直到碰到了所处的容器的边框，或者碰到另外一个浮动的元素。
+        在下面的图片中，有三个红色的正方形。其中有两个向左浮动，一个向右浮动。要注意到第二个向左浮动的正方形被放在第一个向左浮动的正方形的右边。如果还有更多的正方形这样浮动，它们会继续向右堆放，直到填满容器一整行，之后换行至下一行。</span>
+    </div>
+  </div>
+</body>
+</html>
