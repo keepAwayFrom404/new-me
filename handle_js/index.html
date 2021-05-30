@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #content {
+      height: 200px;
+      background: #ccc;
+      text-align: center;
+      line-height: 200px;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">0</div>
+  <button id="cancel">取消当次等待</button>
+  <script src="./debounce.js"></script>
+  <script>
+    const div = document.getElementById('content')
+    function moveMoveHandle() {
+      div.innerHTML = Number(div.innerHTML) + 1
+    }
+    const handle = debounce(moveMoveHandle ,10000, true)
+    div.addEventListener('mousemove',handle)
+
+    const btn = document.getElementById('cancel')
+    btn.addEventListener('click', function() {
+      handle.cancel()
+    })
+  </script>
+</body>
+</html>
