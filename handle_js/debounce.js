@@ -1,5 +1,8 @@
 /**
- * 防抖函数：性能优化，对于高频触发事件，只在事件间隔多久之后执行
+ * 防抖函数：事件触发n秒后再触发回调，如果n秒内又被触发则重新计时
+ * 使用场景：
+ * （1）search联想
+ * （2）window的resize
  * @param {Function} fun 执行函数 
  * @param {Number} time 间隔时间
  * @param {*} immediate 是否立即触发

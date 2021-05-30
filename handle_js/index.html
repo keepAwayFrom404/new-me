@@ -18,12 +18,14 @@
   <div id="content">0</div>
   <button id="cancel">取消当次等待</button>
   <script src="./debounce.js"></script>
+  <script src="./throttle.js"></script>
   <script>
     const div = document.getElementById('content')
     function moveMoveHandle() {
+      console.log('handle done');
       div.innerHTML = Number(div.innerHTML) + 1
     }
-    const handle = debounce(moveMoveHandle ,10000, true)
+    const handle = throttle4(moveMoveHandle ,1000, true)
     div.addEventListener('mousemove',handle)
 
     const btn = document.getElementById('cancel')
