@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      background: #557597;
+    }
+    main {
+      width: 100vw;
+      height: 100vh;
+      background: #34495e;
+      transform: scale(0);
+      animation-name: hd, background, radius;
+      animation-duration: 2s;
+      animation-fill-mode: forwards;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    main::after {
+      content: 'hello animation';
+      font-size: 2em;
+      color: #fff;
+      opacity: 0;
+      animation-name: opacity;
+      animation-duration: 1s;
+      animation-delay: 2s;
+      animation-fill-mode: forwards;
+    }
+    @keyframes opacity {
+      to {
+        opacity: 0.8;
+      }
+    }
+    @keyframes hd {
+      25% {
+        transform: scale(0.5);
+      }
+      50% {
+        transform: scale(1) rotate(360deg);
+      }
+      75% {
+        transform: scale(0.5);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+    @keyframes background {
+      25% {
+        background: #21cc71;
+      }
+      50% {
+        background: #e67122;
+      }
+      75% {
+        transform: #9b59b6;
+      }
+      100% {
+        transform: red;
+      }
+    }
+    @keyframes radius {
+      25% {
+        border-radius: 50%;
+      }
+      50% {
+        border-radius: 0%;
+      }
+      75% {
+        border-radius: 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+  </main>
+</body>
+</html>
