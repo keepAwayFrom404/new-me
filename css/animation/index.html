@@ -14,75 +14,61 @@
       background: #557597;
     }
     main {
-      width: 100vw;
-      height: 100vh;
-      background: #34495e;
-      transform: scale(0);
-      animation-name: hd, background, radius;
-      animation-duration: 2s;
-      animation-fill-mode: forwards;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 400px;
+      height: 400px;
+      border: 1px solid #ccc;
     }
-    main::after {
-      content: 'hello animation';
-      font-size: 2em;
-      color: #fff;
-      opacity: 0;
-      animation-name: opacity;
-      animation-duration: 1s;
-      animation-delay: 2s;
-      animation-fill-mode: forwards;
+  div {
+    width: 100px;
+    height: 100px;
+    background: yellow;
+    animation-name: translate, background, radius;
+    animation-iteration-count: 2;
+    animation-duration: 2s;
+    transform: scale(1);
+  }
+
+  @keyframes translate {
+    25% {
+      transform: translateX(300px);
     }
-    @keyframes opacity {
-      to {
-        opacity: 0.8;
-      }
+    50% {
+      transform: translate(300px,300px);
     }
-    @keyframes hd {
-      25% {
-        transform: scale(0.5);
-      }
-      50% {
-        transform: scale(1) rotate(360deg);
-      }
-      75% {
-        transform: scale(0.5);
-      }
-      to {
-        transform: scale(1);
-      }
+    75% {
+      transform: translateY(300px);
     }
-    @keyframes background {
-      25% {
-        background: #21cc71;
-      }
-      50% {
-        background: #e67122;
-      }
-      75% {
-        transform: #9b59b6;
-      }
-      100% {
-        transform: red;
-      }
+  }
+
+  @keyframes background {
+    25% {
+      background-color: red;
     }
-    @keyframes radius {
-      25% {
-        border-radius: 50%;
-      }
-      50% {
-        border-radius: 0%;
-      }
-      75% {
-        border-radius: 50%;
-      }
+    50% {
+      background-color: pink;
     }
+    75% {
+      background-color: green;
+    }
+  }
+ 
+  @keyframes radius {
+    25% {
+      border-radius: 50%;
+    }
+    50% {
+      border-radius: 0;
+    }
+    75% {
+      border-radius: 50%;
+    }
+  }
+
   </style>
 </head>
 <body>
   <main>
+    <div></div>
   </main>
 </body>
 </html>
