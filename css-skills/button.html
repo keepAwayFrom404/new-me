@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    button {
+      position: absolute;
+      clip: rect(0 0 0 0);
+    }
+    label {
+      margin-top: 20px;
+      line-height: 20px;
+      padding: 10px 20px;
+      background: #ccc;
+      color: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- 解决button不同浏览器高度不一致且不可控的问题，且a标签无法模拟默认的行为，比如submit -->
+  <button id="btn"></button>
+  <label for="btn">按钮</label>
+</body>
+</html>
