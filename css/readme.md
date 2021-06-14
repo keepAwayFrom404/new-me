@@ -11,6 +11,7 @@
 （4）margin的垂直水平百分比值也是根据宽度计算的
 （5）padding、margin的百分比都相对于父元素计算
 （6）margin：auto计算的前提条件是width或height为auto时，元素具有对应方向的自动填充特性
+（7）background-position相对于padding-box定位
 ## 替换元素
 （1）内容的外观不受页面css的影响，除非浏览器暴露一些样式接口
 （2）有自己的尺寸，video、iframe默认300*150；图片默认为0；输入文本不同浏览器不一样

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style> 
+    input[type="text"] {
+      width: 200px;
+      height: 40px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      border-radius: 4px;
+      padding: 10px 40px 10px 10px;
+    }
+    .icon-clear {
+      width: 16px;
+      height: 16px;
+      background: #999;
+      position: absolute;
+      border-radius: 50%;
+      background-clip: content-box;
+      color: white;
+      margin: 1px 0 0 -38px;
+      border: 11px solid transparent;
+      visibility: hidden;
+      cursor: pointer;
+      text-align: center;
+      line-height: 15px;
+    }
+    .icon-clear::before {
+      content: 'x';
+    }
+    input:valid + .icon-clear {
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" id="search" value="我是初始值" required>
+  <label for="search" class="icon-clear"></label>
+  <script>
+    const eleLabel = document.querySelector('label[for="search"'),eleSearch = document.getElementById('search')
+    if(eleLabel && eleSearch) {
+      eleLabel.onclick = function() {
+        eleSearch.value = ''
+      }
+    }
+  </script>
+</body>
+</html>

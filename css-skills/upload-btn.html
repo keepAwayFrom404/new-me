@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .add {
+      width: 150px;
+      height: 150px;
+      border: 2px dashed;
+      color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color .25s;
+    }
+    .add::before {
+      content: '';
+      width: 24px;
+      border: 2px solid;
+    }
+    .add::after {
+      content: '';
+      height: 24px;
+      border: 2px solid;
+      transform: translateX(-15px);
+    }
+    .add:hover {
+      color: #409eff;
+    }
+  </style>
+</head>
+<body>
+  <a class="add" title="继续上传"></a>
+</body>
+</html>
