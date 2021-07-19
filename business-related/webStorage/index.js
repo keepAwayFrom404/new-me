@@ -7,14 +7,14 @@ class CustomStorage {
         this.usage = 0;
         this.quota = 0;
         if (!window)
-            throw new Error('当前环境非浏览器，无法使用storage！');
+            throw new Error("当前环境非浏览器，无法使用storage！");
         if (!window.localStorage)
-            throw new Error('当前环境无法使用localStorage');
+            throw new Error("当前环境无法使用localStorage");
         if (!window.sessionStorage)
-            throw new Error('当前环境无法使用sessionStorage');
+            throw new Error("当前环境无法使用sessionStorage");
         this.readStorage = window.localStorage;
         this.config = {
-            mode: 'local',
+            mode: "local",
             timeout: 3000,
         };
     }
@@ -24,14 +24,14 @@ class CustomStorage {
      */
     bootStrap(config) {
         switch (config.mode) {
-            case 'session':
+            case "session":
                 this.readStorage = window.sessionStorage;
                 break;
-            case 'local':
+            case "local":
                 this.readStorage = window.localStorage;
                 break;
             default:
-                throw new Error('请传入mode配置选择使用的storage');
+                throw new Error("请传入mode配置选择使用的storage");
         }
         this.config = config;
     }
@@ -42,15 +42,16 @@ class CustomStorage {
      */
     setItem(key, value) {
         if (canStringify(value)) {
-            this.checkStorageSpace(0);
             const saveData = {
                 timestamp: Date.now(),
                 data: value,
             };
-            this.readStorage.setItem(key, JSON.stringify(saveData));
+            const dataStr = JSON.stringify(saveData);
+            this.checkStorageSpace(sizeOf(dataStr, ''));
+            this.readStorage.setItem(key, dataStr);
         }
         else {
-            throw new Error('需要存储的数据不支持JSON.stringify，请检查数据。');
+            throw new Error("需要存储的数据不支持JSON.stringify，请检查数据。");
         }
     }
     /**
@@ -59,8 +60,9 @@ class CustomStorage {
      * @returns 当前项的值
      */
     getItem(key) {
-        const content = JSON.parse(this.readStorage.getItem(key) || '{}');
-        if (content.timestamp && Date.now() - content.timestamp >= this.config.timeout) {
+        const content = JSON.parse(this.readStorage.getItem(key) || "{}");
+        if (content.timestamp &&
+            Date.now() - content.timestamp >= this.config.timeout) {
             this.removeItem(key);
             return null;
         }
@@ -130,20 +132,22 @@ class CustomStorage {
     getTimeSortStorage() {
         const keys = this.getKeys();
         const temp = [];
-        keys.forEach(name => {
+        keys.forEach((name) => {
             const item = this.getItem(name);
             if (item.timestamp) {
                 temp.push({
                     key: name,
-                    data: item
+                    data: item,
                 });
             }
         });
         return temp.sort((a, b) => a.data.timestamp - b.data.timestamp);
     }
     checkStorageSpace(curSize) {
-        while (this.quota - this.usage <= curSize) { // 小于需要内存，进行清理
-            const { key } = this.getTimeSortStorage()[0]; // 每次清理第一个
+        while (this.quota - this.usage <= curSize &&
+            this.getTimeSortStorage().length) {
+            // 小于需要内存，进行清理
+            const { key } = this.getTimeSortStorage()[0] || {}; // 每次清理第一个
             this.removeItem(key);
             this.initCacheSize();
         }
@@ -166,5 +170,61 @@ function canStringify(data) {
     return true;
 }
 function isSymbol(val) {
-    return typeof val === 'symbol';
+    return typeof val === "symbol";
 }
+/**
+ * 计算字符串所占的内存字节数，默认使用UTF-8的编码方式计算，也可制定为UTF-16
+ * UTF-8 是一种可变长度的 Unicode 编码格式，使用一至四个字节为每个字符编码
+ *
+ * 000000 - 00007F(128个代码)      0zzzzzzz(00-7F)                             一个字节
+ * 000080 - 0007FF(1920个代码)     110yyyyy(C0-DF) 10zzzzzz(80-BF)             两个字节
+ * 000800 - 00D7FF
+   00E000 - 00FFFF(61440个代码)    1110xxxx(E0-EF) 10yyyyyy 10zzzzzz           三个字节
+  * 010000 - 10FFFF(1048576个代码)  11110www(F0-F7) 10xxxxxx 10yyyyyy 10zzzzzz  四个字节
+  *
+  * 注: Unicode在范围 D800-DFFF 中不存在任何字符
+  * {@link http://zh.wikipedia.org/wiki/UTF-8}
+  *
+  * UTF-16 大部分使用两个字节编码，编码超出 65535 的使用四个字节
+  * 000000 - 00FFFF  两个字节
+  * 010000 - 10FFFF  四个字节
+  *
+  * {@link http://zh.wikipedia.org/wiki/UTF-16}
+  * @param  {String} str
+  * @param  {String} charset utf-8, utf-16
+  * @return {Number}
+  */
+function sizeOf(str, charset) {
+    var total = 0, charCode, i, len;
+    charset = charset ? charset.toLowerCase() : "";
+    if (charset === "utf-16" || charset === "utf16") {
+        for (i = 0, len = str.length; i < len; i++) {
+            charCode = str.charCodeAt(i);
+            if (charCode <= 0xffff) {
+                total += 2;
+            }
+            else {
+                total += 4;
+            }
+        }
+    }
+    else {
+        for (i = 0, len = str.length; i < len; i++) {
+            charCode = str.charCodeAt(i);
+            if (charCode <= 0x007f) {
+                total += 1;
+            }
+            else if (charCode <= 0x07ff) {
+                total += 2;
+            }
+            else if (charCode <= 0xffff) {
+                total += 3;
+            }
+            else {
+                total += 4;
+            }
+        }
+    }
+    return total;
+}
+;
