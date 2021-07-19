@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="./index.js"></script>
+  <script>
+    document.body.innerHTML = '初始化数据'
+    window.addEventListener('storage', function(e) {
+      console.log('done');
+      const {url, key, oldValue, newValue} = e
+      document.body.innerHTML = JSON.stringify({
+        url, key, oldValue, newValue
+      })
+    })
+
+    const customStorage = new CustomStorage()
+    customStorage.bootStrap({
+      mode: 'local',
+      timeout: 3000,
+    })
+    customStorage.clearAll()
+    customStorage.setItem('test', {a: 'hello world', 'b': 12333})
+    console.log(customStorage.getKeys(), 'getKeys =======>');
+    console.log(customStorage.getValues(), 'getValues =======>');
+    console.log(customStorage.getItem('test'), 'getItem =======>');
+    console.log(customStorage.size(), 'size =======>');
+    customStorage.changeItem('test', oV => {
+      return oV + 'newChange'
+    })
+    // console.log(customStorage.removeItem('test'), 'removeItem =======>');
+  </script>
+</body>
+</html>
