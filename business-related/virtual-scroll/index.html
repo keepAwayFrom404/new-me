@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .list-virtual {
+      overflow-y: auto;
+      position: relative;
+      -webkit-overflow-scrolling: touch;
+    }
+    .list-item {
+      width: 300px;
+      height: 40px;
+      border-bottom: 1px solid #ccc;
+    }
+    .list {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="list-virtual" ref="virtualList" @scroll.passive="scrollHandle">
+      <div class="list-bar" ref="listBar"></div>
+      <div class="list" ref="list" :style="transform">
+        <div v-for="item in renderData" class="list-item" :key="item.id" refs="listItem">
+          <slot :item="item">{{item.name}}</slot>
+        </div>
+      </div>
+      <slot name="bottom"></slot>
+    </div>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script src="./mockjs.min.js"></script>
+  <script>
+    const mockData = Mock.mock({
+      "data|100000": [
+        {
+          id: "@id",
+          name: '@name'
+        }
+      ]
+    })
+    const app = new Vue({
+      name: 'virtual-scroll',
+      props: {
+        listData: {
+          type: Array,
+          // required: true,
+          default: () => ([])
+        },
+        // 滚动列表类型：fixed：固定高度；variable：可变高度
+        type: {
+          type: String,
+          default: 'fixed',
+        },
+        // 每屏可见的数量
+        showNum: {
+          type: [Number, String],
+          default: 10
+          // required: true,
+        },
+        // 每条的高度
+        size: {
+          type: [Number, String],
+          default: 40
+        },
+        // 前后多展示的数量，几屏
+        screen: {
+          type: Array,
+          default: () => ([1, 1]),
+        },
+        // 加载更多 触底距离
+        distance: {
+          type: [Number, String],
+          default: 50,
+        },
+        // 虚拟列表的高度，fixed为计算值，variable为100%父元素必须给高度
+        virtualHieght: {
+          type: [Number, String],
+          default: '100%',
+        },
+        deleteId: {
+          type: [Number, String],
+        }
+      },
+      data() {
+        return {
+          start: 0, // 起点坐标
+          end: 0, // 终点坐标
+          offset: 0, // 偏移量
+          scrollTop:0, // 滚动条距离顶部的距离
+        }
+      },
+      watch: {
+        listData(nV) {
+          let prevLength, newLoadData
+          switch (this.type) {
+            case 'fixed':
+              this.$refs.listBar.style.height = nV.length*this.size + 'px'
+              break;
+          }
+        }
+      },
+      computed: {
+        transform() {
+          return {
+            transform: `translate3d(0,${this.offset}px,0)`,
+          }
+        },
+        // 前面展示多少个
+        prevScreen() {
+          return this.showNum * this.screen[0]
+        },
+        // 后面展示多少个
+        nextScreen() {
+          return this.showNum * this.screen[1]
+        },
+        // 辅助变量，用于计算开始坐标
+        prevCount() {
+          return Math.min(this.start, this.prevScreen)
+        },
+        // 辅助变量，用于计算结束坐标
+        nextCount() {
+          return Math.min(this.listData.length - this.end, this.nextScreen)
+        },
+        renderData() {
+          return this.listData.slice(this.start - this.prevCount, this.end + this.nextCount)
+        }
+      },
+      mounted() {
+        this.listData = mockData.data
+        this.$refs.listBar.style.height = this.listData.length * this.size + 'px'
+        this.end = this.start + this.showNum
+        switch (this.type) {
+          case 'fixed':
+            this.$refs.virtualList.style.height = this.showNum * this.size + 'px'
+            break
+        }
+      },
+      methods: {
+        scrollHandle() {
+          const scrollTop = (this.scrollTop = this.$refs.virtualList.scrollTop)
+          switch (this.type) {
+            case 'fixed':
+              this.start = Math.floor(scrollTop / this.size)
+              this.end = this.start + this.showNum
+              this.offset = this.start * this.size - this.prevCount * this.size
+              break;
+          }
+        }
+      }
+    }).$mount('#app')
+  </script>
+</body>
+</html>
