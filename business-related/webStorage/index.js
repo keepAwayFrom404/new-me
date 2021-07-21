@@ -39,12 +39,14 @@ class CustomStorage {
      * 设置存储项
      * @param key
      * @param value
+     * @param timeout 可单独设置每项的过期时间，优先级高于全局的timeout
      */
-    setItem(key, value) {
+    setItem(key, value, timeout = false) {
         if (canStringify(value)) {
             const saveData = {
                 timestamp: Date.now(),
                 data: value,
+                timeout,
             };
             const dataStr = JSON.stringify(saveData);
             this.checkStorageSpace(sizeOf(dataStr, ''));
@@ -61,8 +63,12 @@ class CustomStorage {
      */
     getItem(key) {
         const content = JSON.parse(this.readStorage.getItem(key) || "{}");
-        if (content.timestamp &&
-            Date.now() - content.timestamp >= this.config.timeout) {
+        if (typeof content.timeout === 'boolean' && !content.timeout) {
+            return content.data || null;
+        }
+        const timeout = (typeof content.timeout === 'number' && Date.now() - content.timestamp >= content.timeout) || (content.timestamp &&
+            Date.now() - content.timestamp >= this.config.timeout);
+        if (timeout) {
             this.removeItem(key);
             return null;
         }

@@ -10,6 +10,7 @@ interface StorageBootStrapConfig {
 interface StorageData {
   timestamp: number;
   data: any;
+  timeout?: number | boolean 
 }
 
 class CustomStorage {
@@ -52,13 +53,15 @@ class CustomStorage {
    * 设置存储项
    * @param key
    * @param value
+   * @param timeout 可单独设置每项的过期时间，优先级高于全局的timeout
    */
-  setItem(key: string, value: any): void {
+  setItem(key: string, value: any, timeout: number | boolean = false): void {
     if (canStringify(value)) {
       
       const saveData: StorageData = {
         timestamp: Date.now(),
         data: value,
+        timeout,
       };
       const dataStr = JSON.stringify(saveData)
       this.checkStorageSpace(sizeOf(dataStr, ''));
@@ -76,10 +79,12 @@ class CustomStorage {
     const content: StorageData = JSON.parse(
       this.readStorage.getItem(key) || "{}"
     );
-    if (
-      content.timestamp &&
-      Date.now() - content.timestamp >= this.config.timeout
-    ) {
+    if(typeof content.timeout === 'boolean' && !content.timeout) {
+      return content.data || null
+    }
+    const timeout = (typeof content.timeout === 'number' && Date.now() - content.timestamp >= content.timeout) || (content.timestamp &&
+    Date.now() - content.timestamp >= this.config.timeout)
+    if(timeout) {
       this.removeItem(key);
       return null;
     }
