@@ -29,7 +29,7 @@
     <div class="list-virtual" ref="virtualList" @scroll.passive="scrollHandle">
       <div class="list-bar" ref="listBar"></div>
       <div class="list" ref="list" :style="transform">
-        <div v-for="item in renderData" class="list-item" :key="item.id" refs="listItem">
+        <div v-for="item in renderData" class="list-item" :vIndex="item.index" :key="item.id" refs="listItem">
           <slot :item="item">{{item.name}}</slot>
         </div>
       </div>
@@ -40,7 +40,7 @@
   <script src="./mockjs.min.js"></script>
   <script>
     const mockData = Mock.mock({
-      "data|100000": [
+      "data|10000": [
         {
           id: "@id",
           name: '@name'
@@ -99,13 +99,27 @@
         }
       },
       watch: {
+        deleteId(id) {
+          this.deleteItem(id)
+        },
         listData(nV) {
           let prevLength, newLoadData
           switch (this.type) {
             case 'fixed':
               this.$refs.listBar.style.height = nV.length*this.size + 'px'
               break;
+            case 'variable':
+              prevLength = this.variableData.length
+              newLoadData = nV.slice(prevLength)
+              // pushData 此数据并没有偏移量  页面通过renderData更新之后 会触发update 在updated中通过渲染的节点会主动更新后面数据的偏移量
+              this.variableData = [...this.variableData, ...this.getVisiblePosition(newLoadData)]
+              break
           }
+          // 当滚动时未触发回弹时会造成$emit('scroll')事件不执行 会导致懒加载处理的dom时获取到的是老数据
+          this.$nextTick(() => {
+            this.$emit('domUpdateSuccess', this.renderData)
+            this.emitScrollEvent()
+          })
         }
       },
       computed: {
@@ -130,11 +144,17 @@
         nextCount() {
           return Math.min(this.listData.length - this.end, this.nextScreen)
         },
+        formatData() {
+          return this.listData.map((item, index) => ({ ...item, index }))
+        },
         renderData() {
-          return this.listData.slice(this.start - this.prevCount, this.end + this.nextCount)
+          return this.formatData.slice(this.start - this.prevCount, this.end + this.nextCount)
         }
       },
       mounted() {
+        if (!this.size) {
+          throw new Error(`请传入size属性`)
+        }
         this.listData = mockData.data
         this.$refs.listBar.style.height = this.listData.length * this.size + 'px'
         this.end = this.start + this.showNum
@@ -142,9 +162,76 @@
           case 'fixed':
             this.$refs.virtualList.style.height = this.showNum * this.size + 'px'
             break
+          case 'variable':
+            this.variableData = []
+            this.$refs.virtualList.style.height = this.virtualHieght
+            this.variableData = this.getVariablePosition(this.listData)
+            break
         }
+        this.deleteId && this.deleteItem(this.deleteId)
+      },
+      updated() {
+        // 对于不定高的元素需要计算出实际高度
+        this.$nextTick(() => {
+          console.log('updated done =======>');
+          const nodes = this.$refs.listItem
+          if(this.type === 'variable' && nodes && nodes.length) {
+            // 用节点更新缓存
+            nodes.forEach(node => {
+              const { height } = node.getBoundingClientRect()
+              const index = +node.getAttribute('vIndex')
+              const diff = oldHeight - height
+              const varData = this.variableData
+              const oldHeight = varData.height
+              if(diff) {
+                varData[index].height = height
+                varData[index].bottom = varData[index].bottom - diff
+                for (let i = index + 1; i < varData.length; i++) {
+                  const element = varData[i];
+                  element.top = varData[i - 1].bottom
+                  element.bottom = element.bottom - diff
+                }
+              }
+            })
+            this.$refs.listBar.style.height = varData[varData.length - 1].bottom + 'px'
+          }
+        })
       },
       methods: {
+        deleteItem(id) {
+          const deleteIndex = this.listData.findIndex(item => item.id === id)
+          if(deleteIndex > -1) {
+            let deleteItem
+            
+            if(this.type === 'fixed') {
+              this.listData.splice(deleteIndex, 1)
+            } 
+            deleteItem = this.listData[deleteIndex]
+            if(this.type === 'variable') {
+              deleteItem = this.variableData[deleteIndex]
+              this.variableData.splice(deleteIndex, 1)
+              for (let i = deleteItem.index; i < this.variableData.length; i++) {
+                const element = this.variableData[i];
+                element.index = element.index - 1
+                element.top = element.top - deleteItem.height
+                element.bottom = element.bottom - deleteItem.height
+              }
+            }
+            this.$emit('deleteSuccess', deleteItem)
+          }
+        },
+        // 创造用于不定高列表定位使用
+        getVariablePosition(data) {
+          if(!data.length) return []
+          const prevLength = this.variableData ? this.variableData.length : 0
+          return data.map((item, index) => ({
+            id: item.id,
+            index: prevLength + index,
+            height: this.size,
+            top: (prevLength + index) * this.size,
+            bottom: (prevLength + index + 1) * this.size
+          }))
+        },
         scrollHandle() {
           const scrollTop = (this.scrollTop = this.$refs.virtualList.scrollTop)
           switch (this.type) {
@@ -153,9 +240,44 @@
               this.end = this.start + this.showNum
               this.offset = this.start * this.size - this.prevCount * this.size
               break;
+            case 'variable': 
+              this.start = getCurrentIndex(scrollTop, this.variableData)
+              this.end = this.start + this.showNum
+              this.offset = this.variableData[this.start - this.prevCount].top || 0
+              break
+          }
+          this.$nextTick(() => {
+            this.emitScrollEvent()
+            if(this.$refs.virtualList.scrollHeight - scrollTop - this.$refs.virtualList.clientHeight <= this.distance ) { // 剩余距离小于预留距离，加载更多
+              console.log('loading more ======>');
+              this.$emit('loadMore')
+            }
+          })
+        },
+        emitScrollEvent() {
+        this.$emit('scroll', {
+          scrollTop: this.scrollTop,
+          rendScrollTop: this.scrollTop - this.offset,
+          renderData: this.renderData
+        })
+      },
+      getCurrentIndex(value, positions) {
+        let start = 0
+        let end = positions.length - 1
+        let currentIndex = null
+        while(start <= end) {
+          const middleIndex = Math.floor((start + end) / 2)
+          const middleValue = positions[middleIndex].bottom
+          if(value === middleValue) return middleIndex + 1
+          else if(middleValue < value) start = middleIndex + 1
+          else if(middleValue > value) {
+            if(currentIndex === null || currentIndex > middleIndex) currentIndex = middleIndex
+            end = middleIndex - 1
           }
         }
+        return currentIndex
       }
+      },
     }).$mount('#app')
   </script>
 </body>
