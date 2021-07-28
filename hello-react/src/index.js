@@ -122,6 +122,10 @@ function caculateWinner(squares) {
 
 // ========================================
 
+if (module.hot) {
+  module.hot.accept();
+}
+
 ReactDOM.render(
   <Game />,
   document.getElementById('root')
