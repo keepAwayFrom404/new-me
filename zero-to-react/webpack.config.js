@@ -18,7 +18,7 @@ module.exports = {
       }
     ]
   },
-  resolve: {extensions: ['*', '.js', '.jsx']}, // 引入文件无需添加后后缀
+  resolve: {extensions: ['*', '.js', '.jsx']}, // 引入文件无需添加后缀
   output: {
     path: path.resolve(__dirname, 'dist/'),
     publicPath: '/dist/',
