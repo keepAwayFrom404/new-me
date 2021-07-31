@@ -125,3 +125,135 @@ class Logger {
 const logger = selfish(new Logger())
 const { printName } = logger
 // printName()
+
+class Foo3 {
+  static classMethod() {
+    // this.baz()
+    return 'hello'
+  }
+  static baz() {
+    console.log('hello');
+    
+  }
+  baz() {
+    console.log('world');
+  }
+}
+const foo3 = new Foo3()
+// foo3.baz()
+
+class Bar extends Foo3 {
+  static classMethod() {
+    console.log(super.classMethod() + ', too');
+  }
+}
+
+// Bar.classMethod()
+
+class IncreasingCounter {
+  _count = 0
+  static prop = 1
+
+  get value() {
+    console.log('get the current value:' + this._count);
+  }
+  increment() {
+    this._count++
+    return this
+  }
+}
+
+const insCount = new IncreasingCounter()
+insCount.increment().increment()
+// insCount.value
+
+// IncreasingCounter.prop = 1
+// console.log(IncreasingCounter.prop);
+
+// 私有方法
+class Widget {
+  snaf = '123'
+  foo(baz) {
+    bar.call(this, baz)
+  }
+}
+
+function bar(baz) {
+  this.snaf = baz
+}
+
+const widget = new Widget()
+widget.foo(233)
+// console.log(widget.snaf);
+
+const bar2 = Symbol('bar')
+const snaf = Symbol('snaf')
+
+class MyClass2 {
+  foo(baz) {
+    this[bar2](baz)
+  }
+  [bar](baz) {
+    this[snaf] = baz
+  }
+}
+
+class Self {
+  #a;
+  #b;
+  constructor(a, b) {
+    this.#a = a;
+    this.#b = b;
+  }
+  // #sum() {
+  //   return this.#a + this.#b;
+  // }
+  printSum() {
+    // console.log(this.#sum());
+  }
+}
+
+const self = new Self()
+// self.printSum()
+// console.log(self.value);
+
+class Foo4 {
+  #privateValue = 42
+  static getPribateValue(foo) {
+    console.log(foo.#privateValue);
+  }
+}
+// Foo4.getPribateValue(new Foo4())
+
+class FakeMath {
+  static PI = 22 / 7
+  static #totallyRandomNumber = 4
+  static random() {
+    console.log('I heard you like random numbers...');
+    console.log(FakeMath.#totallyRandomNumber);
+  }
+}
+
+// console.log(FakeMath.PI);
+// FakeMath.random()
+// console.log(new.target);
+
+class Shape {
+  constructor() {
+    if(new.target === Shape) {
+      throw new Error('本类不能实例化')
+    }
+  }
+}
+
+class Rectangle extends Shape {
+  constructor(length, width) {
+    super()
+    this.length = length
+    this.width = width
+  }
+}
+
+// const x = new Shape()
+const y = new Rectangle(3, 4)
+// console.log(y);
