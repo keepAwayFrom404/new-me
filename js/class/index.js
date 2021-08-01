@@ -257,3 +257,42 @@ class Rectangle extends Shape {
 // const x = new Shape()
 const y = new Rectangle(3, 4)
 // console.log(y);
+
+class Parent {
+  a = 2
+  static prop = 1
+  constructor() {
+    this.x = 3
+    console.log(super.valueOf(), '=====>')
+  }
+  print() {
+    console.log(this.x)
+    
+  }
+  method() {
+    console.log('Parent method');
+  }
+}
+
+class Child extends Parent {
+  constructor() {
+    super()
+    this.x = 4
+    super.x = 5
+    console.log(super.x)
+    console.log(this.x)
+  }
+  m() {
+    super.print()
+  }
+  cm() {
+    super.method()
+  }
+  static sm() {
+    console.log(super.prop)
+  }
+}
+
+const c = new Child()
+const p1 = new Parent()
+// c.m()
