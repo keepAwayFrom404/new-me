@@ -263,7 +263,7 @@ class Parent {
   static prop = 1
   constructor() {
     this.x = 3
-    console.log(super.valueOf(), '=====>')
+    // console.log(super.valueOf(), '=====>')
   }
   print() {
     console.log(this.x)
@@ -279,8 +279,8 @@ class Child extends Parent {
     super()
     this.x = 4
     super.x = 5
-    console.log(super.x)
-    console.log(this.x)
+    // console.log(super.x)
+    // console.log(this.x)
   }
   m() {
     super.print()
@@ -296,3 +296,118 @@ class Child extends Parent {
 const c = new Child()
 const p1 = new Parent()
 // c.m()
+
+function pro() {
+
+}
+// console.log(pro.__proto__ === Function.prototype)
+class A {
+
+}
+
+class B extends A{}
+// console.log(B.__proto__ === A)
+// console.log(B.prototype.__proto__ === A.prototype)
+
+const a = new A()
+const b = new B()
+
+// console.log(a.__proto__ === A.prototype)
+
+function MyArray() {
+  Array.apply(this, arguments)
+}
+
+MyArray.prototype = Object.create(Array.prototype, {
+  constructor: {
+    value: MyArray,
+    writable: true,
+    configurable: true,
+    enumerable: true,
+  }
+})
+
+const color = new MyArray()
+color[0] = 'red'
+// console.log(color.length)
+class MyArray2 extends Array {}
+const arr = new MyArray2()
+arr[0]  = 12
+// console.log(arr.length)
+arr.length = 0
+// console.log(arr.length)
+
+class VersionArray extends Array {
+  constructor() {
+    super()
+    this.history = [[]]
+  }
+  commit() {
+    this.history.push(this.slice())
+  }
+  revert() {
+    this.splice(0, this.length, ...this.history[this.history.length - 1])
+  }
+}
+
+const versionArray = new VersionArray()
+versionArray.push(1)
+versionArray.push(2)
+// console.log(versionArray)
+// console.log(versionArray.history)
+versionArray.commit()
+// console.log(versionArray)
+// console.log(versionArray.history)
+versionArray.push(3)
+// console.log(versionArray)
+// console.log(versionArray.history)
+versionArray.revert()
+// console.log(versionArray)
+
+class ExtendableError extends Error {
+  constructor(message) {
+    super()
+    this.message = message
+    this.stack = (new Error()).stack
+    this.name = this.constructor.name
+  }
+}
+
+class MyError extends ExtendableError {}
+
+const myError = new MyError('123')
+// console.log(myError.message)
+// console.log(myError instanceof Error)
+// console.log(myError.name)
+// console.log(myError.stack)
+
+class NewObj extends Object {}
+
+const o = new NewObj({attr: true})
+// console.log(o.attr === true)
+
+function mixin(...mixins) {
+  class Mix {
+    constructor() {
+      for(let mixin of mixins) {
+        copyProperties(this, new mixin()) // 拷贝实例属性
+      }
+    }
+  }
+
+  for(let mixin of mixins) {
+    copyProperties(Mix, mixin) // 静态属性与方法
+    copyProperties(Mix.prototype, mixin.prototype) // 原型属性
+  }
+
+  return Mix
+}
+
+function copyProperties(target, source) {
+  for(let key of Reflect.ownKeys(source)) {
+    if(key !== 'constructor' && key !== 'prototype' && key !== 'name') {
+      const desc = Object.getOwnPropertyDescriptor(source, key)
+      Object.defineProperty(target, key, desc)
+    }
+  }
+}
