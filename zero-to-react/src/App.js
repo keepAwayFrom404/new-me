@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css'
 import 'antd/dist/antd.css';
 import XLSX from 'xlsx'
@@ -101,17 +101,21 @@ const props = {
   }
 };
 
-class App extends Component {
-  render() { 
-    return ( 
-      <div className="App">
-        <h1>hello react!</h1>
-        <Upload {...props}>
-          <Button icon={<UploadOutlined />}>Click to Upload</Button>
-        </Upload>
-      </div>
-     );
-  }
+function App() {
+  let [count, setCount] = useState(0)
+  useEffect(() => {
+    document.title = `You clicked ${count} times`
+  })
+  return ( 
+    <div className="App">
+      <h1>hello react!</h1>
+      <p>You clicked { count } times</p>
+      <button onClick={() => setCount(count+1)}>click me</button>
+      <Upload {...props}>
+        <Button icon={<UploadOutlined />}>Click to Upload</Button>
+      </Upload>
+    </div>
+   );
 }
  
 export default hot(module)(App);
