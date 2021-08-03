@@ -1,28 +1,8 @@
 const path = require('path')
+const commonConfig = require('./webpack.common')
 
-module.exports = {
+module.exports = Object.assign(commonConfig, {
   mode: 'development',
-  entry: path.join(__dirname, '../src/index.js'),
-  output: {
-    path: path.join(__dirname, '../dist'),
-    filename: 'bundle.js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        use: ['babel-loader'],
-        include: path.join(__dirname, '../src')
-      },
-      {
-        test: /.css$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
-  },
-  externals: {
-    'React': 'react'
-  },
   devServer: {
     contentBase: path.join(__dirname, '../dist'),
     compress: true,
@@ -30,5 +10,14 @@ module.exports = {
     historyApiFallback: true,
     host: '127.0.0.1',
     port: 8002,
-  }
-}
+    proxy: { // 配置服务代理
+      '/api': {
+          target: 'http://localhost:3003',
+          // 转换请求 /api/users 为 http://localhost:3000/users
+          pathRewrite: {'^/api' : ''},  
+          changeOrigin: true
+      }
+    },
+  },
+  devtool: 'inline-source-map',
+})
