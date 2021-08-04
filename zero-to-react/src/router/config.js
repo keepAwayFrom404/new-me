@@ -5,6 +5,7 @@ import My from '../views/my'
 import FakeRedux from '../views/fakeRedux/index'
 import Memo from '../views/memoHook/index'
 import RefHook from '../views/refHook/index'
+import CustomHook from '../views/customHook/index'
 
 export const routeList = [
   {
@@ -41,5 +42,10 @@ export const routeList = [
     name: 'refHook',
     router: '/refHook',
     component: RefHook,
+  },
+  {
+    name: 'customHook',
+    router: '/customHook',
+    component: CustomHook,
   },
 ]

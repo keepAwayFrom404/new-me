@@ -19,6 +19,7 @@ export default function() {
             return <Link key={item.router} to={item.router}>{item.name}</Link>
           })
         }
+        <br />
         <Switch>
           {
             routeList.map(item => {

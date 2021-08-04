@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 function RefHook() {
   const inputEle = useRef(null)
@@ -8,6 +8,12 @@ function RefHook() {
   }
 
   const [text, setText] = useState('hello')
+  const textRef = useRef()
+
+  useEffect(() => {
+    textRef.current = text
+    console.log(textRef.current, 'textRef.current ======>');
+  })
 
   return (
     <>
