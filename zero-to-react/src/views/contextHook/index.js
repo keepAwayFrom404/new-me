@@ -1,4 +1,19 @@
 import React, { createContext } from 'react'
-const ThemeContext = createContext('light')
+const themes = {
+  light: {
+    foreground: '#000000',
+    background: '#eeeeee',
+  },
+  dark: {
+    foreground: '#ffffff',
+    background: '#222222',
+  }
+}
 
-export default ThemeContext
+const ThemeContext = createContext(themes.dark)
+ThemeContext.displayName = 'ThemeContext'
+
+export {
+  themes,
+  ThemeContext
+} 
