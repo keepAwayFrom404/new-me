@@ -25,7 +25,6 @@
     "json-server": "^0.16.3",
     "less": "^3.13.1",
     "less-loader": "^4.1.0",
-    "postcss-cssnext": "^3.1.0",
     "postcss-loader": "^4.3.0",
     "style-loader": "^0.23.0",
     "ts-loader": "^8.3.0",
@@ -46,5 +45,13 @@
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.0",
     "xlsx": "^0.17.0"
-  }
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead",
+    "IE 11",
+    "not IE 10"
+  ]
 }
