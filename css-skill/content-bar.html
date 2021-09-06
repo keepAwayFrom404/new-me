@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 256px;
+      height: 256px;
+      border-bottom: 1px dashed #ccc;
+      text-align: justify;
+    }
+    .box::before {
+      content: '';
+      display: inline-block;
+      height: 100%;
+    }
+    .box::after {
+      content: '';
+      display: inline-block;
+      width: 100%;
+    }
+    .bar {
+      display: inline-block;
+      width: 20px;
+    }
+    #btn {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 这里不能换行 -->
+  <div id="box" class="box"><i class="bar"></i>
+    <i class="bar"></i>
+    <i class="bar"></i>
+    <i class="bar"></i>
+  </div>
+  <button id="btn">再增加一条数据</button>
+  <script>
+    const box = document.getElementById('box')
+    const bars = document.querySelectorAll('#box > i')
+    let barsLen = bars.length
+    console.log(barsLen)
+    const btn = document.getElementById('btn')
+    
+    for(let i = 0;i < barsLen;i ++) {
+      bars[i].style.height = Math.ceil(Math.random() * 256) + 'px'
+      bars[i].style.background = '#' + (Math.random() + '').slice(-6)
+    }
+    btn.addEventListener('click', function() {
+      const height = Math.ceil(Math.random() * 256) + 'px'
+      const bgc = '#' + (Math.random() + '').slice(-6)
+      const eleClone = bars[0].cloneNode()
+      eleClone.style.height = height
+      eleClone.style.background = bgc
+      box.innerHTML = box.innerHTML + ' ' + eleClone.outerHTML
+      barsLen += 1
+      if(barsLen === 10) {
+        this.setAttribute('disabled', true)
+      }
+    })
+  </script>
+</body>
+</html>
