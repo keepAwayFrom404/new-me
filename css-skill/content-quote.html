@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    :lang(ch) > q {
+      quotes: '“' '”';
+    }
+    :lang(en) > q {
+      quotes: '"' '"';
+    }
+    :lang(no) > q {
+      quotes: '《' '》';
+    }
+    q::before {
+      content: open-quote;
+    }
+    q::after {
+      content: close-quote;
+    }
+    /* .ask {
+      quotes: '提问：“' '”';
+    }
+    .answer {
+      quotes: '回答：“' '”';
+    }
+    .ask::before,.answer::before {
+      content: open-quote;
+    } 
+    .ask::after,.answer::after {
+      content: close-quote;
+    } */
+    .ask::before {
+      content: '提问：“';
+    }
+    .answer::before {
+      content: '回答：“';
+    }
+    .ask::after,.answer::after {
+      content: '”';
+    }
+  </style>
+</head>
+<body>
+  <p lang="ch"><q>这本书很赞！</q></p>
+  <p lang="en"><q>This book is very good！</q></p>
+  <p lang="no"><q>denne bog er fantastisk！</q></p>
+  <p class="ask">为什么open-quote/close-quote很少使用？</p>
+  <p class="answer">因为直接使用字符更干脆！</p>
+</body>
+</html>
