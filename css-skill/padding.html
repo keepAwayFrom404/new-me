@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .click-more {
+      padding: .25em 0;
+    }
+    .custom-split a + a:before {
+      content: '';
+      font-size: 0;
+      padding: 10px 3px 1px;
+      border-left: 1px solid gray;
+      margin-left: 6px;
+    }
+    /* 等比宽高固定头图 */
+    .box {
+      position: relative;
+      padding: 10% 50%;
+    }
+    .box > img {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      height: 100%;
+    }
+    .box-inline {
+      border: 2px dashed #cd0000;
+    }
+    .box-inline > span {
+      padding: 50%;
+      /* background: gray; */
+    }
+    .label-button > button {
+      position: absolute;
+      clip: rect(0 0 0 0);
+    }
+    .label-button > label {
+      display: inline-block;
+      line-height: 20px;
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <a class="click-more" href="#">增大行内元素的点击区域</a>
+  <div class="custom-split">
+    <a href="#">登陆</a><a href="#">注册</a>
+  </div>
+  <div class="box">
+    <img src="../assets/avatar.jpg" alt="">
+  </div>
+  <!-- 换行原因在于：
+  （1）对于内联元素，其padding是会断行的，跟着内联盒模型的行框盒子走，下面的例子因为文字较多换行，所以padding区域也跟着掉下来了；
+  （2）再根据后来居上的原则，部分文字就会被盖住；
+  （3）即使span没有内容高度也会比宽度大，因为幽灵空白节点，设置font-size:0可解决。 -->
+  <div class="box-inline">
+    <span>内有文字若干</span>
+  </div>
+  <!-- 按钮padding与高度计算在不同浏览器千差万别，可食用label模拟，即语意良好又行为保留，ui与兼容都好 -->
+  <div class="label-button">
+    <button id="btn"></button>
+    <label for="btn">按钮</label>
+  </div>
+</body>
+</html>
