@@ -1,4 +1,10 @@
 /* 样式重置 */
+body {
+  line-height: 1.5;
+}
+input, button {
+  line-height: inherit;
+}
 img {
   display: inline-block;
 }
