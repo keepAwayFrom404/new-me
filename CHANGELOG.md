@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.5](https://github.com/keepAwayFrom404/new-me/compare/v1.1.5-alpha.2...v1.1.5) (2022-01-20)
+
+
+### Bug Fixes
+
+* test version 03 ([b30a33f](https://github.com/keepAwayFrom404/new-me/commit/b30a33fe55dba7ba41c7952147be49095c8651cc))
+* test version 04 ([bdc744f](https://github.com/keepAwayFrom404/new-me/commit/bdc744f534566a0587390c3d2e6c2913014d50d2))
+* test version 05 ([e998c19](https://github.com/keepAwayFrom404/new-me/commit/e998c1927eb235819a546acea3f98bc491563420))
+
 ### [1.1.5-alpha.2](https://github.com/keepAwayFrom404/new-me/compare/v1.1.5-alpha.1...v1.1.5-alpha.2) (2022-01-20)
 
 ### [1.1.5-alpha.1](https://github.com/keepAwayFrom404/new-me/compare/v1.1.5-alpha.0...v1.1.5-alpha.1) (2022-01-20)
