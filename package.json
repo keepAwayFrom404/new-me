@@ -1,6 +1,6 @@
 {
   "name": "new-me-global",
-  "version": "1.1.0-alpha.3",
+  "version": "1.1.0",
   "description": "It is a readme, nothing special.",
   "main": "1.js",
   "dependencies": {
