@@ -1,6 +1,6 @@
 {
   "name": "new-me-global",
-  "version": "1.1.0-alpha.2",
+  "version": "1.1.0-alpha.3",
   "description": "It is a readme, nothing special.",
   "main": "1.js",
   "dependencies": {
@@ -21,7 +21,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "standard-version --prerelease alpha --no-verify"
+    "version": "standard-version",
+    "version:alpha": "standard-version --prerelease alpha --no-verify"
   },
   "repository": {
     "type": "git",
