@@ -1,23 +1,27 @@
 {
   "name": "new-me-global",
-  "version": "1.0.0",
+  "version": "1.1.0-alpha.0",
   "description": "It is a readme, nothing special.",
   "main": "1.js",
   "dependencies": {
     "element-theme": "^2.0.1",
     "element-theme-chalk": "^2.13.2",
-    "puppeteer": "^5.5.0",
-    "webpack": "^5.28.0",
-    "webpack-cli": "^4.5.0"
+    "puppeteer": "^5.5.0"
   },
   "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "css-loader": "^5.2.0",
     "less": "^4.1.1",
     "less-loader": "^8.0.0",
+    "postcss": "^8.3.6",
+    "postcss-loader": "^6.1.1",
+    "postcss-px-to-viewport": "^1.1.1",
+    "standard-version": "^9.3.2",
     "style-loader": "^2.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version --prerelease alpha --no-verify"
   },
   "repository": {
     "type": "git",
