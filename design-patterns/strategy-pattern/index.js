@@ -47,3 +47,22 @@ bonus.setStrategy(new perforanceA())
 console.log(bonus.getBouns());
 bonus.setStrategy(new perforanceB())
 console.log(bonus.getBouns());
+
+// js版本
+const strategies = {
+  'S': function(salary) {
+    return salary * 4
+  },
+  'A': function(salary) {
+    return salary * 3
+  },
+  'B': function(salary) {
+    return salary * 2
+  },
+}
+
+const calculateBouns = function(level, salary) {
+  return strategies[level](salary)
+}
+
+console.log(calculateBouns('S', 23000));
