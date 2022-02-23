@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 70%;
+      background: #ccc;
+      height: 200px;
+      line-height: 200px;
+    }
+    .content {
+      width: -webkit-fill-available;
+      display: inline-block;
+      background: red;
+      line-height: 20px;
+      padding: 10px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <p class="content">width:fill-available可以让元素的宽度表现为默认的block水平元素的尺寸表现。<br>
+      但这里实际上是display:inline-block水平的，<br>
+      于是，我们可以保证宽度满尺寸自适应的同时使用line-height实现近似的垂直居中效果。</p>
+  </div>
+</body>
+</html>

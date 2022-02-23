@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <script type="text/javascript" src="https://cdn.rawgit.com/fex-team/kity/dev/dist/kity.min.js"></script>
+  <script src="./kityminder.core.js"></script> -->
+  <!-- <script src="./index.js"></script> -->
+  <title>Document</title>
+</head>
+<body>
+  <!-- <div id="kity_paper"></div> -->
+  <div id="minder-container"></div>
+  <script type="text/javascript">
+    const a = require('kityminder-core')
+    console.log(a, 'a ====>');
+    var minder = new kityminder.Minder({
+        renderTo: '#minder-container'
+    });
+  </script>
+<!-- <script type="text/javascript">
+    var paper = new kity.Paper('kity_paper');
+    var rect = paper.put(new kity.Rect());
+    var text = paper.put(new kity.Text());
+
+    text.setContent('hello kity!');
+    text.fill('white');
+    text.setX(100);
+    text.setY(200);
+
+    rect.setBox(text.getBoundaryBox().expand(-15, -10, 15, 10));
+    rect.setRadius(5);
+    rect.fill('blue');
+</script> -->
+</body>
+</html>
