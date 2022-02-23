@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    img {
+      display: inline-block;
+      width: 256px;
+      height: 192px;
+      color: transparent;
+      position: relative;
+      overflow: hidden;
+    }
+    img:not([src]) {
+      visibility: hidden;
+    }
+    img::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f0f3f9;
+      visibility: visible;
+    }
+    img::after {
+      content: attr(alt);
+      position: absolute;
+      width: 100%;
+      line-height: 30px;
+      color: white;
+      font-size: 14px;
+      background: rgba(0,0,0,.5);
+      transform: translateY(100%);
+      visibility: visible;
+      bottom: 0;
+      left: 0;
+      text-align: center;
+      transition: transform .5s;
+    }
+    img:hover::after {
+      transform: translateY(0);
+    }
+    #btn {
+      margin-top: 20px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <img id="img" alt="美女沉思图" data-src="../assets/avatar.jpg">
+  <button id="btn">设置src显示图片</button>
+  <script>
+    const btn = document.getElementById('btn')
+    const img = document.getElementById('img')
+    let initBtnValue = btn.innerHTML
+    const src = img.getAttribute('data-src')
+    btn.addEventListener('click', function() {
+      if(btn.innerHTML === initBtnValue) {
+        btn.innerHTML = '移除src'
+        img.setAttribute('src', src)
+      } else {
+        btn.innerHTML = initBtnValue
+        img.removeAttribute('src')
+      }
+    })
+
+  </script>
+</body>
+</html>

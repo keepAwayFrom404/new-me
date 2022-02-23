@@ -1,0 +1,10 @@
+body {
+  font-size: 40px;
+}
+.abc {
+  color: #000000;
+}
+.hello .gemini-m-abc .bcd {
+  color: red;
+  border: 1px solid pink;
+}

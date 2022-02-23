@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* .con {
+      padding: 9px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+    }
+    .son {
+      width: 100%;
+      padding: 0;
+      border: 0 none;
+      outline: 0 none;
+      resize: none;
+      background: none;
+      background: #fff;
+    } */
+    .son {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .half-img {
+      position: relative;
+      display: inline-block;
+      font-size: 0;
+    }
+    .half-img > a {
+      width: 50%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      opacity: .4;
+    }
+    .left {
+      background: red;
+      left: 0;
+    }
+    .right {
+      background: #000;
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="con">
+    <textarea name="textarea" class="son" id="textarea" cols="30" rows="10"></textarea>
+  </div>
+  <div class="half-img">
+    <a class="left" href="#"></a>
+    <img src="../assets/avatar.jpg" width="200px" alt="">
+    <a class="right" href="#"></a>
+  </div>
+</body>
+</html>

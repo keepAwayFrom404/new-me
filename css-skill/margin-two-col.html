@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>margin</title>
+  <style>
+    .box {
+      overflow: hidden;
+    }
+    .box > img {
+      float: left;
+      margin-left: -200px;
+    }
+    .full {
+      width: 100%;
+      float: left;
+    }
+    /* 充分利用父元素可用空间设置margin会影响尺寸大小（如果不包这一层的话宽度会超出把图片挤出去） */
+    .full > p {
+      margin-right: 200px;
+      background: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="full">
+      <p>文字内容...</p>
+    </div>
+    <img width="200px" src="../assets/avatar.jpg" alt="">
+  </div>
+</body>
+</html>

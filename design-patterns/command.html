@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>command</title>
+</head>
+<body>
+    <button id="excute">excute</button>
+    <button id="undo">undo</button>
+    <!-- <script>
+        // 面向对象版本将命令接收者当作对象的属性保存
+        const OpenTvCommand = function(receiver) {
+            this.receiver = receiver
+        }
+        OpenTvCommand.prototype.excute = function() {
+            this.receiver.open()
+        }
+        OpenTvCommand.prototype.undo = function() {
+            this.receiver.close()
+        }
+        // 命令发起者
+        const Tv = {
+            open: function() {
+                console.log('open Tv')
+            },
+            close: function() {
+                console.log('close Tv')
+            }
+        }
+
+        const setCommand = function(command) {
+            document.getElementById('excute').onclick = function() {
+                command.excute()
+            }
+            document.getElementById('undo').onclick = function() {
+                command.undo()
+            }
+        }
+        setCommand(new OpenTvCommand(Tv))
+    </script> -->
+    <script>
+        // 闭包版本命令对象，接收
+        const creatCommand = function(receiver) {
+            const excute = function() {
+                return receiver.open()
+            }
+            const undo = function() {
+                return receiver.close()
+            }
+
+            return {
+                excute,
+                undo,
+            }
+        }
+        // 命令发起者
+        const Tv = {
+            open: function() {
+                console.log('open Tv')
+            },
+            close: function() {
+                console.log('close Tv')
+            }
+        }
+
+        const setCommand = function(command) {
+            document.getElementById('excute').onclick = function() {
+                command.excute()
+            }
+            document.getElementById('undo').onclick = function() {
+                command.undo()
+            }
+        }
+        setCommand(creatCommand(Tv))
+    </script>
+</body>
+</html>

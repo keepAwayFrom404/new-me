@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .fan {
+      text-align: center;
+      width: 200px;
+      padding: 10px;
+      background: red;
+    }
+    .son {
+      display: inline-block;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <!-- 文字少居中，文字多居左 -->
+  <div class="fan">
+    <div id="conMore" class="son">文字内容</div>
+  </div>
+  <p><button id="btnMore">更多文字</button></p>
+  <script>
+    var btn = document.getElementById('btnMore'), 
+    content = document.getElementById('conMore');
+
+    if (btn && content) {
+      btn.onclick = function() {
+        content.innerHTML += '-新增文字';
+      };
+    }
+  </script>
+</body>
+</html>

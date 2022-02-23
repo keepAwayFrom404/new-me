@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>惰性懒加载</title>
+</head>
+<body>
+  <script>
+    let miniConsole = (function() {
+      const cache = []
+      const handler = function(e) {
+        if(e.keyCode === 113) {
+          const script = document.createElement('script')
+          script.src = './lazy-load.js'
+          script.onload = function() {
+            for(let i = 0,fn;fn = cache[i++];) {
+              fn()
+            }
+          }
+          document.getElementsByTagName('head')[0].appendChild(script)
+          document.removeEventListener('keydown', handler)
+        }
+      }
+      document.body.addEventListener('keydown',handler)
+      return {
+        log: function() {
+          const args = arguments
+          cache.push(function() {
+            return miniConsole.log.apply(miniConsole,args)
+          })
+        }
+      }
+    })()
+    miniConsole.log(11)
+  </script>
+</body>
+</html>

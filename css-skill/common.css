@@ -1,0 +1,16 @@
+/* 样式重置 */
+body {
+  line-height: 1.5;
+}
+input, button {
+  line-height: inherit;
+}
+img {
+  display: inline-block;
+}
+/* 清除浮动 */
+.clear::after {
+  content: '';
+  display: block;
+  clear: both;
+}

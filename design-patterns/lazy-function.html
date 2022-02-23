@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn1">点击我绑定事件</button>
+  <script>
+    let addEvent = function(ele, type, handler) {
+      if(window.addEventListener) {
+        console.log('addEventListener done')
+        addEvent = function(ele, type, handler) {
+          ele.addEventListener(type, handler)
+        }
+      }
+      if(window.attachEvent) {
+        console.log('attachEvent done')
+        addEvent = function(ele, type, handler) {
+          ele.attachEvent(type, handler)
+        }
+      }
+      addEvent(ele, type, handler) // 保证第一次顺利执行，执行完后不会再进行判断
+    }
+
+    const btn =document.getElementById('btn1')
+    addEvent(btn, 'click', function() {
+      console.log(1)
+    })
+    addEvent(btn, 'click', function() {
+      console.log(2)
+    })
+  </script>
+</body>
+</html>

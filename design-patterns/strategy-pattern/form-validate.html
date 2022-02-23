@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form id="registerForm">
+    请输入用户名：<input type="text" name="username" />
+    请输入密码：<input type="text" name="password" />
+    请输入手机号：<input type="text" name="phone" />
+    <button>提交</button>
+  </form>
+  <script src="./form-validate.js"></script>
+  <script>
+    const form = document.getElementById('registerForm')
+
+    const validateFunc = function() {
+      const validate = new Validate()
+      validate.add(form.username, [{strategy: 'isNonEmpty', errMsg: '账号不能为空'}, {strategy: 'minLength:10', errMsg: '账号不少于10位'}])
+      validate.add(form.password, [{strategy: 'minLength:6', errMsg: '密码不少于6位'}])
+      validate.add(form.phone, [{strategy: 'isMobile', errMsg: '手机号格式错误'}])
+      return validate.start()
+    }
+    
+    form.onsubmit = function() {
+      const errMsg = validateFunc()
+      if(errMsg) {
+        alert(errMsg)
+        return false
+      } else {
+        alert('成功啦')
+      }
+    }
+  </script>
+</body>
+</html>
