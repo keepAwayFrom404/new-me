@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+  <button id="getBtn">get</button>
+  <button id="postBtn">post</button>
+  <button id="deleteBtn">delete</button>
+  <button id="jsonpBtn">jsonp</button>
+  <script>
+    $('#getBtn').on('click', function() {
+      $.ajax({
+        method: 'get',
+        url: 'http://127.0.0.1/api/data',
+        data: {
+
+        },
+        success: function(res) {
+          console.log(res)
+        }
+      })
+    })
+    $('#postBtn').on('click', function() {
+      $.ajax({
+        method: 'post',
+        url: 'http://127.0.0.1/api/data',
+        data: {
+          bookname: '123',
+          author: 'cadenli'
+        },
+        success: function(res) {
+          console.log(res)
+        }
+      })
+    })
+    $('#deleteBtn').on('click', function() {
+      $.ajax({
+        method: 'delete',
+        url: 'http://127.0.0.1/api/data',
+        data: {
+          bookname: '123',
+          author: 'cadenli'
+        },
+        success: function(res) {
+          console.log(res)
+        }
+      })
+    })
+    $('#jsonpBtn').on('click', function() {
+      $.ajax({
+        dataType: 'jsonp',
+        method: 'get',
+        url: 'http://127.0.0.1/api/jsonp?cb=myFun',
+        success: function(res) {
+          console.log(res, 'res ===>')
+        }
+      })
+    })
+    function myFun(data) {
+      console.log(data, 'data ===>')
+    }
+  </script>
+</body>
+</html>
