@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      height: 160px;
+      padding: 30px;
+      background: #beceeb;
+      box-sizing: border-box;
+    }
+    .son {
+      height: 100%;
+      background: #cd0000;
+    }
+    .box2 {
+      margin-top: 20px;
+      height: 160px;
+      padding: 30px;
+      background: #beceeb;
+      box-sizing: border-box;
+      position: relative;
+    }
+    /*说明绝对定位元素的宽度和高度都是根据paddingbox的高度计算的，而文档流中的元素是根据content-box的高度计算*/
+    .son2 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #cd0000;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="son"> </div>
+  </div>
+  <div class="box2">
+    <div class="son2">123</div>
+  </div>
+</body>
+</html>

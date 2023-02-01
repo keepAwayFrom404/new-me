@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宽度分离，保持流动</title>
+  <style>
+    .fan {
+      width: 200px;
+    }
+    .son { /*需要添加边距都在这里，宽度是不变的*/
+      border: 1px solid red;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="fan">
+    <div class="son">我是中间内容区域</div>
+  </div>
+</body>
+</html>

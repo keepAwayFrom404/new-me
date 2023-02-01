@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 200px;
+      border: 1px solid red;
+      text-align: center;
+    }
+    .content {
+      display: inline-block;
+      text-align: left;
+    }
+    .box + .box {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>文字少居中，文字多居左，使用的是行内块级元素的包裹性</h1>
+  <div class="box"><div class="content">点我</div></div>
+  <div class="box"><div class="content">愁愁愁，恰似一江水向东流来流去.....</div></div>
+</body>
+</html>
