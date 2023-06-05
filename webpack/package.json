@@ -6,9 +6,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "core-js": "^3.10.0",
-    "jquery": "^3.6.0",
-    "webpack": "^5.31.2",
-    "webpack-cli": "^4.6.0"
+    "jquery": "^3.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
@@ -37,10 +35,13 @@
     "terser-webpack-plugin": "^5.1.1",
     "thread-loader": "^3.0.1",
     "url-loader": "^4.1.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^3.11.2",
     "workbox-webpack-plugin": "^6.1.2"
   },
   "scripts": {
+    "build": "webpack --config ./source-map/webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
