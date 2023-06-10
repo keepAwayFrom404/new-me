@@ -1,39 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <script>
-    function render(vNode, container) {
-      const ele = document.createElement(vNode.tag)
-      for (const key in vNode.props) {
-        if(/^on/.test(key)) { // 事件注册
-          ele.addEventListener(key.substr(2).toLowerCase(), vnode.props[key])
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function mountElement(vnode, container) {
+        // 渲染字符串tag
+        const ele = document.createElement(vnode.tag);
+        for (const key in vnode.props) {
+          if (/^on/.test(key)) {
+            // 事件注册
+            ele.addEventListener(key.substr(2).toLowerCase(), vnode.props[key]);
+          }
+        }
+        if (typeof vnode.children === "string") {
+          const child = document.createTextNode(vnode.children);
+          ele.appendChild(child);
+        } else if (Array.isArray(vnode.children)) {
+          vnode.children.forEach((child) => render(child, ele));
+        }
+
+        container.appendChild(ele);
+      }
+
+      function mountComponent(vnode, container) {
+        const subTree = vnode.tag();
+        render(subTree, container);
+      }
+
+      function render(vnode, container) {
+        if (typeof vnode.tag === "string") {
+          mountElement(vnode, container);
+        } else if (typeof vnode.tag === "function") {
+          mountComponent(vnode, container);
         }
       }
-      if(typeof vNode.children === 'string') {
-        const child = document.createTextNode(vNode.children)
-        ele.appendChild(child)
-      } else if(Array.isArray(vNode.children)) {
-        vNode.children.forEach(child => render(child, ele))        
-      }
 
-      container.appendChild(ele)
-    }
+      const MyComponent = function () {
+        return {
+          tag: "div",
+          props: {
+            onClick: () => alert("hello"),
+          },
+          children: "click me",
+        };
+      };
 
-    const vnode = {
-      tag: 'div',
-      props: {
-        onClick: () => alert('hello')
-      },
-      children: 'click me'
-    }
+      const vnode = {
+        tag: MyComponent,
+      };
 
-    render(vnode, document.body)
-  </script>
-</body>
+      render(vnode, document.body);
+    </script>
+  </body>
 </html>
