@@ -8,22 +8,10 @@
   </head>
   <body>
     <script>
-      const data = {
-        text: "hello world",
-      };
+      let activeEffect;
+      const effectStack = []
 
       const bucket = new WeakMap();
-
-      const obj = new Proxy(data, {
-        get(target, key) {
-          track(target, key);
-          return target[key];
-        },
-        set(target, key, newVal) {
-          target[key] = newVal;
-          trigger(target, key);
-        },
-      });
 
       function track(target, key) {
         if (!activeEffect) return;
@@ -62,27 +50,49 @@
         effectFn.deps.length = 0
       }
 
-      let activeEffect;
-
       function effect(fn) {
         const effectFn = () => {
           cleanup(effectFn)
           activeEffect = effectFn;
+          effectStack.push(effectFn) // 副作用执行压入栈
           fn();
+          effectStack.pop() // 执行完弹出
+          activeEffect = effectStack[effectStack.length - 1]
         }
         effectFn.deps = []
         effectFn()
       }
 
-      effect(() => {
-        console.log("effect run");
-        document.body.innerText = obj.text;
+
+      const data = {
+        foo: true,
+        bar: true,
+      };
+      const obj = new Proxy(data, {
+        get(target, key) {
+          track(target, key);
+          return target[key];
+        },
+        set(target, key, newVal) {
+          target[key] = newVal;
+          trigger(target, key);
+        },
+      });
+
+      let temp1,temp2
+
+      effect(function effectFn1() {
+        console.log("effectFn1 run");
+        effect(function effectFn2() {
+          console.log('effectFn2 run')
+          temp2 = obj.bar
+        })
+        temp1 = obj.foo
       });
 
       setTimeout(() => {
-        obj.text = "hello vue3";
-        obj.notExist = "hello vue3";
-      }, 2000);
+        obj.bar = false
+      }, 1000);
     </script>
   </body>
 </html>
