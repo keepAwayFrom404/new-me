@@ -36,8 +36,21 @@
 
         const effects = depsMap.get(key);
         if (effects) {
-          const effectsToRun = new Set(effects)
-          effectsToRun.forEach((fn) => fn());
+          const effectsToRun = new Set()
+
+          effects && effects.forEach((fn) => {
+            if(fn !== activeEffect) { // 防止类似a.b++的情况造成无限循环
+              effectsToRun.add(fn)
+            } 
+          });
+
+          effectsToRun.forEach(fn => {
+            if(fn.options && fn.options.scheduler) {
+              fn.options.scheduler(fn)
+            } else {
+              fn()
+            }
+          })
           return true;
         }
       }
@@ -50,7 +63,7 @@
         effectFn.deps.length = 0
       }
 
-      function effect(fn) {
+      function effect(fn, options) {
         const effectFn = () => {
           cleanup(effectFn)
           activeEffect = effectFn;
@@ -59,13 +72,29 @@
           effectStack.pop() // 执行完弹出
           activeEffect = effectStack[effectStack.length - 1]
         }
+        effectFn.options = options
         effectFn.deps = []
         effectFn()
       }
 
+      const jobQueue = new Set()
+      const p = Promise.resolve()
+
+      let isFlushing 
+
+      function flushJob() {
+        if(isFlushing) return 
+        isFlushing = true
+        p.then(() => { // 如果同步执行isFlushing会被设置为true即还是两次，所以需要在同步的effect收集完成后执行
+          
+          jobQueue.forEach(job => job())
+        }).finally(() => {
+          isFlushing = false
+        })
+      }
 
       const data = {
-        foo: true,
+        foo: 1,
         bar: true,
       };
       const obj = new Proxy(data, {
@@ -81,18 +110,19 @@
 
       let temp1,temp2
 
-      effect(function effectFn1() {
-        console.log("effectFn1 run");
-        effect(function effectFn2() {
-          console.log('effectFn2 run')
-          temp2 = obj.bar
-        })
-        temp1 = obj.foo
+      effect(() => {
+        console.log(obj.foo)
+      }, {
+        scheduler(fn) {
+          jobQueue.add(fn)
+          flushJob()
+        }
       });
 
-      setTimeout(() => {
-        obj.bar = false
-      }, 1000);
+      obj.foo++
+      obj.foo++
+      
+      console.log('end')
     </script>
   </body>
 </html>
