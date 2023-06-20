@@ -1,7 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
 import { useEffect } from "react";
+import deepEqu from 'deep-equal'
 function App() {
+  const a = {b: 123}
+  const b = {
+    b: 123
+  }
+  console.log(deepEqu(a, b), '123')
   useEffect(() => {
     error()
   })

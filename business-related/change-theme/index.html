@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style id="themes">
+    :root {
+      --primary-color: '#409eff';
+    }
+    .btn {
+      color: var(--primary-color)
+    }
+  </style>
+</head>
+<body>
+  <div class="btn">click</div>
+  <script>
+    const btn = document.getElementsByClassName('btn')[0]
+    btn.onclick = function(e) {
+      console.log('click')
+      const themeDom = document.getElementById('themes')
+      if(themeDom) {
+        themeDom.innerText = `
+        :root {
+          --primary-color: 'green';
+        }
+        .btn {
+          color: var(--primary-color)
+        }
+        `
+      } else {
+        themeDom = document.createElement('style')
+        themeDom.setAttribute('id', 'themes')
+        document.head.appendChild(themeDom)
+      }
+    }
+  </script>
+</body>
+</html>

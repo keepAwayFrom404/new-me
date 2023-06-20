@@ -72,4 +72,14 @@ const foo3 = foo2.bind(obj5)
 foo3(6)
 const obj6 = new foo3(7)
 console.log(obj5.b)
-console.log(obj6.b)
+console.log(obj6.b) // new绑定高于显示
+
+function test() {
+  console.log(typeof this === 'function')
+}
+test()
+
+Function.prototype.myBind = function(target) {
+  console.log(typeof this)
+}
+foo2.myBind()

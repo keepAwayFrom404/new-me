@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box {
+      height: 20px;
+      background: pink;
+    }
+  </style>
+</head>
+<body>
+  <button id="begin" class="begin">开始</button>
+  <button id="end" class="end">停止</button>
+  <div id="box"></div>
+  <script>
+    (function() {
+      const begin = document.querySelector('#begin')
+      const end = document.querySelector('#end')
+      const box = document.querySelector('#box')
+      
+      let ref
+      end.addEventListener('click', () => {
+        cancelAnimationFrame(ref)
+      })
+      begin.addEventListener('click', () => {
+        ref = requestAnimationFrame(test)
+      })
+      function test() {
+        box.style.width = Math.random()*100 + 'px'
+        ref = requestAnimationFrame(test)
+      }
+    })()
+  </script>
+</body>
+</html>
